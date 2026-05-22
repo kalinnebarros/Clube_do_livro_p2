@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Biblioteca | Clube das Mais Mais</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>📚 Biblioteca do Clube</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="perfil.html">Perfil</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="livros-lidos">
+            <h3>📖 Histórico de Leituras</h3>
+            <p>Clique em um livro para ver o que as "Mais Mais" acharam dele:</p>
+            <div id="lista-livros-historico" class="grid-biblioteca">
+                </div>
+        </section>
+
+        <section id="detalhes-livro" style="display: none;">
+            <button onclick="voltarParaLista()" class="btn-voltar">← Voltar para a estante</button>
+            <h2 id="nome-livro-selecionado" style="color: #ef5f81; margin-top: 20px;"></h2>
+            <div id="resenhas-antigas-container">
+                </div>
+        </section>
+    </main>
+
+    <script type="module" src="biblioteca.js"></script>
+</body>
+</html>

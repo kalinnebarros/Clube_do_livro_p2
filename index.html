@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clube do Livro | Home</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>📚🎧☕Clube do Livro</h1>
+        <nav>
+            <ul>
+               <li><a href="index.html">Início</a></li>
+               <li><a href="biblioteca.html">Biblioteca</a></li>
+               <li><a href="perfil.html">Perfil</a></li>
+            </ul>   
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero">
+            <h2>Bem-vindo ao Clube das mais mais :)</h2>
+            <p>“Uma vida sem leitura é uma vida sem esperança”. — George Orwell</p>
+        </section>
+
+       <section id="book-of-the-month">
+            <h3>⟶ Livro do Mês</h3>
+            <div id="book-display">
+                </div>
+        </section>  
+
+       <section id="reviews">
+            <h3>Resenhas</h3>
+            <p>Sinta-se livre para compartilhar suas opiniões!</p>
+            
+            <div class="review-form">
+                <h4 id="livro-atual-resenha" style="color: #a91739; margin-bottom: 10px;">Lendo: Carregando...</h4>
+                <textarea id="input-texto" placeholder="O que achou da leitura?"></textarea>
+                
+                <div class="form-footer">
+                    <select id="input-nota">
+                        <option value="5">⭐⭐⭐⭐⭐</option>
+                        <option value="4">⭐⭐⭐⭐</option>
+                        <option value="3">⭐⭐⭐</option>
+                        <option value="2">⭐⭐</option>
+                        <option value="1">⭐</option>
+                    </select>
+                    <button onclick="postarResenha()">Publicar</button>
+                </div>
+            </div>
+
+            <div id="reviews-container">
+                </div>
+        </section>
+    </main>
+
+    <section id="admin-panel" style="display: none;">
+        <h3>⚙️ Painel da Administradora</h3>
+    </section>   
+
+    <script type="module" src="script.js"></script> 
+</body>
+</html>

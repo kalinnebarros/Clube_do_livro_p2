@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Meu Perfil | Clube do Livro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>👤 Meu Perfil</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Voltar para a Home</a></li>
+            </ul>
+        </nav>
+    </header>
+
+   <main class="perfil-container">
+    <div class="perfil-card">
+        <div id="perfil-avatar" class="avatar-grande">?</div>
+        
+        <div class="campo-perfil">
+            <label>Nome de Usuário:</label>
+            <input type="text" id="perfil-nome">
+        </div>
+
+        <div class="campo-perfil">
+            <label>E-mail:</label>
+            <input type="email" id="perfil-email" disabled> 
+            <small>(E-mail não pode ser alterado)</small>
+        </div>
+
+        <div class="campo-perfil">
+            <label>Trocar Foto de Perfil:</label>
+            <input type="file" id="perfil-foto-arquivo" accept="image/*">
+        </div>
+
+        <div class="perfil-acoes">
+            <button class="btn-salvar" onclick="salvarAlteracoes()">Salvar Alterações</button>
+            <button class="btn-senha" onclick="esqueciSenha()">Redefinir Senha</button>
+        </div>
+        
+        <hr>
+        <button class="btn-sair" onclick="sair()">Sair da Conta</button>
+    </div>
+</main>
+
+    <script type="module" src="perfil.js"></script>
+</body>
+</html>
