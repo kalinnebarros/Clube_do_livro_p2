@@ -9,12 +9,12 @@
 <body>
 
     <header>
-        <h1>📚🎧☕Clube do Livro</h1>
+        <h1>📚🎧☕ Clube do Livro</h1>
         <nav>
             <ul>
-               <li><a href="index.html">Início</a></li>
-               <li><a href="biblioteca.html">Biblioteca</a></li>
-               <li><a href="perfil.html">Perfil</a></li>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="biblioteca.html">Biblioteca</a></li>
+                <li><a href="perfil.html">Perfil</a></li>
             </ul>   
         </nav>
     </header>
@@ -25,13 +25,13 @@
             <p>“Uma vida sem leitura é uma vida sem esperança”. — George Orwell</p>
         </section>
 
-       <section id="book-of-the-month">
+        <section id="book-of-the-month">
             <h3>⟶ Livro do Mês</h3>
             <div id="book-display">
                 </div>
         </section>  
 
-       <section id="reviews">
+        <section id="reviews">
             <h3>Resenhas</h3>
             <p>Sinta-se livre para compartilhar suas opiniões!</p>
             
@@ -39,15 +39,15 @@
                 <h4 id="livro-atual-resenha" style="color: #a91739; margin-bottom: 10px;">Lendo: Carregando...</h4>
                 <textarea id="input-texto" placeholder="O que achou da leitura?"></textarea>
                 
-                <div class="form-footer">
-                    <select id="input-nota">
+                <div class="form-footer" style="display: flex; gap: 10px; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                    <select id="input-nota" style="padding: 10px; border-radius: 10px; border: 1px solid #eee; background: #fafafa; font-size: 1rem;">
                         <option value="5">⭐⭐⭐⭐⭐</option>
                         <option value="4">⭐⭐⭐⭐</option>
                         <option value="3">⭐⭐⭐</option>
                         <option value="2">⭐⭐</option>
                         <option value="1">⭐</option>
                     </select>
-                    <button onclick="postarResenha()">Publicar</button>
+                    <button id="btn-publicar" onclick="postarResenha()">Publicar</button>
                 </div>
             </div>
 

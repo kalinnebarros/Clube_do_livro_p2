@@ -6,13 +6,15 @@ body {
     padding: 0;
     background-color: #f8f2d1; /* Tom creme do clube */
     color: #333;
+    width: 100%;
+    min-height: 100vh;
 }
 
-/* --- CABEÇALHO (FIXO E ALINHADO) --- */
+/* --- CABEÇALHO (FIXO E RESPONSIVO) --- */
 header {
     background: #ef5f81;
     color: white;
-    padding: 1rem 5%; /* Dá um espaçamento interno seguro nas laterais */
+    padding: 1rem 5%; 
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -22,14 +24,15 @@ header {
 }
 
 header h1 { 
-    font-size: 1.5rem; 
+    font-size: 1.4rem; 
     margin: 0; 
+    white-space: nowrap;
 }
 
 header ul { 
     list-style: none; 
     display: flex; 
-    gap: 25px; /* Espaço uniforme entre Início, Biblioteca e Perfil */
+    gap: 20px; 
     margin: 0; 
     padding: 0; 
 }
@@ -38,6 +41,7 @@ header a {
     color: white; 
     text-decoration: none; 
     font-weight: bold; 
+    font-size: 0.95rem;
     transition: 0.3s; 
 }
 
@@ -49,6 +53,7 @@ header a:hover {
 section { 
     padding: 2rem 5%; 
     box-sizing: border-box;
+    width: 100%;
 }
 
 #hero { 
@@ -56,9 +61,10 @@ section {
     background: #d0a4ff; 
     border-radius: 15px; 
     margin: 20px auto; 
-    max-width: 90%;
-    padding: 30px;
+    max-width: 100%;
+    padding: 25px 20px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    box-sizing: border-box;
 }
 
 #admin-panel {
@@ -66,18 +72,21 @@ section {
     border: 2px dashed #ef5f81;
     border-radius: 15px;
     margin: 10px auto;
-    max-width: 90%;
+    max-width: 100%;
     text-align: center;
+    box-sizing: border-box;
+    padding: 15px;
 }
 
 /* --- FORMULÁRIO DE RESENHAS --- */
 .review-form {
     background: white;
-    padding: 25px;
+    padding: 20px;
     border-radius: 20px;
     border: 2px solid #d0a4ff;
     margin-bottom: 40px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    box-sizing: border-box;
 }
 
 .review-form textarea, .review-form select {
@@ -88,6 +97,7 @@ section {
     border: 1px solid #eee;
     background: #fafafa;
     box-sizing: border-box;
+    font-size: 1rem;
 }
 
 .review-form button {
@@ -98,13 +108,15 @@ section {
     border-radius: 25px; 
     cursor: pointer; 
     font-weight: bold;
+    width: 100%; /* No mobile facilita o clique */
 }
 
 /* --- FEED DE RESENHAS --- */
 #reviews-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    width: 100%;
 }
 
 .review-post {
@@ -113,13 +125,14 @@ section {
     padding: 20px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     margin-bottom: 20px;
+    box-sizing: border-box;
 }
 
 .avatar-circle {
-    width: 45px; 
-    height: 45px; 
-    min-width: 45px;
-    min-height: 45px;
+    width: 42px; 
+    height: 42px; 
+    min-width: 42px;
+    min-height: 42px;
     background: #d0a4ff; 
     border-radius: 50%;
     display: flex; 
@@ -127,7 +140,7 @@ section {
     justify-content: center;
     color: white; 
     font-weight: bold; 
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     overflow: hidden;
     border: 2px solid #ef5f81;
 }
@@ -138,65 +151,51 @@ section {
     object-fit: cover;
 }
 
-.comments-section {
-    margin-top: 15px;
-    padding-top: 10px;
-    border-top: 1px solid #f0f0f0;
-    font-size: 0.85rem;
-}
-
-.comment {
-    background: #f9f9f9;
-    padding: 8px;
-    border-radius: 8px;
-    margin-bottom: 5px;
-}
-
-.comment strong { color: #ef5f81; }
-
-
 /* --- 🔐 ESTILOS EXCLUSIVOS DA TELA DE LOGIN --- */
-/* (Essas classes evitam quebrar o layout das outras abas) */
-
 .body-login {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-color: #fcf8f2;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 100vh !important;
+    background-color: #fcf8f2 !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
 }
 
 .header-login {
-    position: absolute;
+    position: absolute !important;
     top: 0;
     left: 0;
+    width: 100%;
     text-align: center;
-    justify-content: center;
+    justify-content: center !important;
     padding: 15px 0;
 }
 
 .login-container {
     width: 100%;
     max-width: 400px;
-    padding: 20px;
+    padding: 0;
     box-sizing: border-box;
-    margin-top: 80px;
+    margin: 80px auto 0 auto; /* Centraliza horizontalmente no mobile */
 }
 
 .auth-box {
     background: white;
-    padding: 35px 30px;
+    padding: 30px 20px;
     border-radius: 16px;
     box-shadow: 0 8px 24px rgba(239, 95, 129, 0.08);
     text-align: center;
+    box-sizing: border-box;
+    width: 100%;
 }
 
 .auth-box h2 {
     margin-top: 0;
     margin-bottom: 25px;
     color: #444;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
 }
 
 .auth-box input {
@@ -233,14 +232,6 @@ section {
     margin-bottom: 15px;
 }
 
-.auth-box button:hover {
-    background-color: #d64f6f;
-}
-
-.auth-box button:active {
-    transform: scale(0.98);
-}
-
 .auth-box p {
     margin: 0;
     font-size: 0.9rem;
@@ -251,10 +242,47 @@ section {
     color: #ef5f81;
     text-decoration: none;
     font-weight: 600;
-    transition: color 0.2s ease;
 }
 
-.auth-box p a:hover {
-    text-decoration: underline;
-    color: #d64f6f;
+/* =========================================================================
+   📱 MEDIA QUERIES - REGRAS ADAPTÁVEIS PARA TELEMÓVEL / CELULAR
+   ========================================================================= */
+@media (max-width: 768px) {
+    /* Ajustes do Menu do Topo */
+    header {
+        flex-direction: column; /* Título em cima, links embaixo */
+        gap: 12px;
+        padding: 12px;
+        text-align: center;
+    }
+
+    header ul {
+        gap: 15px;
+    }
+
+    header h1 {
+        font-size: 1.3rem;
+    }
+
+    section {
+        padding: 1rem 4%; /* Margens menores nas laterais do ecrã */
+    }
+
+    /* 🔑 Correção Dinâmica para a Exibição do Livro do Mês (Destaque principal) */
+    #book-display > div {
+        flex-direction: column !important; /* Transforma linha em coluna no mobile */
+        text-align: center;
+        padding: 15px !important;
+        gap: 15px !important;
+    }
+
+    #book-display img {
+        width: 180px !important; /* Tamanho controlado para não estourar a tela */
+        height: 260px !important;
+        margin: 0 auto;
+    }
+
+    .review-form button {
+        width: 100%;
+    }
 }
