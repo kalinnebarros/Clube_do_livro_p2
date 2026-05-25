@@ -9,13 +9,13 @@ import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/fi
 // 📚 CONFIGURAÇÃO MANUAL DO LIVRO DO MÊS
 // Mude para null se quiser deixar sem livro (ex: const LIVRO_MANUAL = null;)
 // =========================================================================
-const LIVRO_MANUAL = {
+const LIVRO_MANUAL = null/*{
     id: "malibu2026", 
     titulo: "malibu renasce",
     autor: "Taylor Jenkins Reid",
     capa: "https://m.media-amazon.com/images/I/81FICwL24GL._AC_UF1000,1000_QL80_.jpg", 
     descricao: "Malibu Renasce (de Taylor Jenkins Reid) acompanha um único dia, em agosto de 1983, que mudará para sempre a vida dos quatro irmãos Riva. Famosos por serem filhos de um lendário cantor, eles encaram segredos, traumas de abandono e a tensão de sua tradicional e caótica festa de fim de verão."
-};
+}*/;
 // =========================================================================
 
 const firebaseConfig = {
