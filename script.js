@@ -14,7 +14,8 @@ const LIVRO_MANUAL = {
     titulo: "Terra Partida",
     autor: "Clare Leslie Hall",
     capa: "https://m.media-amazon.com/images/I/9150j9tc+6L.jpg", 
-    descricao: "A história acompanha Beth, uma mulher simples que vive uma rotina pacata no interior de Dorset com o marido, Frank, e o cunhado, Jimmy. Os três formam uma família unida, até que um incidente inesperado abala a região: Jimmy atira em um cachorro que invade a fazenda. O animal pertence a ninguém menos que Gabriel Wolfe, o grande amor da adolescência de Beth, que partiu seu coração no passado e agora retorna à cidade com o filho, Leo."
+    descricao: "A história acompanha Beth, uma mulher simples que vive uma rotina pacata no interior de Dorset com o marido, Frank, e o cunhado, Jimmy. Os três formam uma família unida, até que um incidente inesperado abala a região: Jimmy atira em um cachorro que invade a fazenda. O animal pertence a ninguém menos que Gabriel Wolfe, o grande amor da adolescência de Beth, que partiu seu coração no passado e agora retorna à cidade com o filho, Leo.",
+    link: "https://drive.google.com/uc?export=download&id=1Y1a-UiY9r66IBx2g6KS8pk_-jwPxms7z" // 👈 ADICIONE O LINK DO EPUB AQUI DENTRO DAS ASPAS A CADA MÊS
 };
 // =========================================================================
 
@@ -201,7 +202,6 @@ function escutarResenhasDoLivroAtual() {
 }
 
 // --- ESCUTA OS COMENTÁRIOS DE CADA CARD (TEMPO REAL) ---
-// --- ESCUTA OS COMENTÁRIOS DE CADA CARD (TEMPO REAL com LIXEIRA) ---
 function escutarComentariosDaResenha(resenhaId) {
     const listaDiv = document.getElementById(`lista-comentarios-${resenhaId}`);
     if (!listaDiv) return;
@@ -253,7 +253,6 @@ window.deletarComentario = async function(resenhaId, comentarioId) {
     try {
         const { doc, deleteDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
         await deleteDoc(doc(db, "resenhas", resenhaId, "comentarios", comentarioId));
-        // Não precisa de alert de sucesso aqui, porque o onSnapshot atualiza a tela sumindo com ele na hora!
     } catch (e) {
         console.error("Erro ao deletar comentário:", e);
         alert("Você não tem permissão para apagar este comentário.");
@@ -274,7 +273,7 @@ window.postarComentario = async function(resenhaId) {
             texto: texto.trim(),
             dataCriacao: serverTimestamp()
         });
-        input.value = ""; // Limpa a caixinha após enviar
+        input.value = ""; 
     } catch (e) {
         console.error("Erro ao comentar:", e);
         alert("Erro ao enviar comentário.");
@@ -304,6 +303,11 @@ function atualizarLivroDoMes() {
         display.innerHTML = `<p>🎲 O livro do mês ainda não foi sorteado...</p>`;
         if (labelResenha) labelResenha.innerText = "Aguardando próximo sorteio...";
     } else {
+        // Gera o botão de download apenas se a propriedade "link" contiver um texto válido
+        const botaoDownload = LIVRO_MANUAL.link 
+            ? `<a href="${LIVRO_MANUAL.link}" target="_blank" download="${LIVRO_MANUAL.titulo.replace(/\s+/g, '_')}.epub" style="display:inline-block; margin-top:15px; padding:8px 16px; background-color:#ef5f81; color:white; text-decoration:none; border-radius:20px; font-weight:bold; font-size:0.9rem;">📥 Baixar EPUB</a>`
+            : '';
+
         display.innerHTML = `
             <div style="display:flex; gap:20px; align-items:center; background:white; padding:20px; border-radius:15px; box-shadow:0 4px 15px rgba(0,0,0,0.05);">
                 ${LIVRO_MANUAL.capa ? 
@@ -314,6 +318,7 @@ function atualizarLivroDoMes() {
                     <h4 style="margin:0; color:#ef5f81; font-size:1.5rem; text-transform: capitalize;">${LIVRO_MANUAL.titulo || 'Sem título'}</h4>
                     <p style="margin:5px 0;"><strong>Autor:</strong> ${LIVRO_MANUAL.autor || 'Desconhecido'}</p>
                     <p style="font-size:0.9rem; color:#555; margin:0; line-height: 1.4;">${LIVRO_MANUAL.descricao || 'Sem descrição cadastrada.'}</p>
+                    ${botaoDownload}
                 </div>
             </div>
         `;
