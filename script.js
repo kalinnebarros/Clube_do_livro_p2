@@ -9,13 +9,13 @@ import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/fi
 // 📚 CONFIGURAÇÃO MANUAL DO LIVRO DO MÊS
 // Mude para null se quiser deixar sem livro (ex: const LIVRO_MANUAL = null;)
 // =========================================================================
-const LIVRO_MANUAL = null/*{
-    id: "malibu2026", 
-    titulo: "malibu renasce",
-    autor: "Taylor Jenkins Reid",
-    capa: "https://m.media-amazon.com/images/I/81FICwL24GL._AC_UF1000,1000_QL80_.jpg", 
-    descricao: "Malibu Renasce (de Taylor Jenkins Reid) acompanha um único dia, em agosto de 1983, que mudará para sempre a vida dos quatro irmãos Riva. Famosos por serem filhos de um lendário cantor, eles encaram segredos, traumas de abandono e a tensão de sua tradicional e caótica festa de fim de verão."
-}*/;
+const LIVRO_MANUAL = {
+    id: "terrapartida2026", 
+    titulo: "Terra Partida",
+    autor: "Clare Leslie Hall",
+    capa: "https://m.media-amazon.com/images/I/9150j9tc+6L.jpg", 
+    descricao: "A história acompanha Beth, uma mulher simples que vive uma rotina pacata no interior de Dorset com o marido, Frank, e o cunhado, Jimmy. Os três formam uma família unida, até que um incidente inesperado abala a região: Jimmy atira em um cachorro que invade a fazenda. O animal pertence a ninguém menos que Gabriel Wolfe, o grande amor da adolescência de Beth, que partiu seu coração no passado e agora retorna à cidade com o filho, Leo."
+};
 // =========================================================================
 
 const firebaseConfig = {
