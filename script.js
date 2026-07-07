@@ -36,6 +36,37 @@ const ADMIN_UID = "be7Xn0enc5axIs7oW9NXDCKldAi2";
 let usuarioLogado = null;
 let desativarEscutaResenhas = null; 
 
+// --- ⏳ SISTEMA DE LOGOUT POR INATIVIDADE ---
+let temporizadorInatividade;
+
+function resetarTemporizadorInatividade() {
+    clearTimeout(temporizadorInatividade);
+    
+    // Se o usuário estiver logado, inicia a contagem regressiva
+    if (usuarioLogado) {
+        // 15 minutos = 15 * 60 * 1000 milissegundos (Altere aqui se quiser mais ou menos tempo)
+        temporizadorInatividade = setTimeout(fazerLogoutAutomatico, 15 * 60 * 1000); 
+    }
+}
+
+function fazerLogoutAutomatico() {
+    if (usuarioLogado) {
+        console.log("Sessão expirada por inatividade. Efetuando logout...");
+        signOut(auth).then(() => {
+            window.location.href = "login.html";
+        }).catch((e) => console.error("Erro ao deslogar por inatividade:", e));
+    }
+}
+
+// Ouvintes para detectar movimentos do usuário e redefinir o cronômetro
+window.addEventListener('load', resetarTemporizadorInatividade);
+window.addEventListener('mousemove', resetarTemporizadorInatividade);
+window.addEventListener('mousedown', resetarTemporizadorInatividade);
+window.addEventListener('keypress', resetarTemporizadorInatividade);
+window.addEventListener('scroll', resetarTemporizadorInatividade);
+window.addEventListener('touchstart', resetarTemporizadorInatividade);
+
+
 // --- CONTROLE DE ACESSO ---
 onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -44,9 +75,12 @@ onAuthStateChanged(auth, (user) => {
             const panel = document.getElementById('admin-panel');
             if(panel) panel.style.display = 'block';
         }
+        // Ativa o cronômetro assim que o login é confirmado
+        resetarTemporizadorInatividade();
     } else {
         console.log("Usuário não está logado no Firebase no momento.");
         usuarioLogado = null;
+        clearTimeout(temporizadorInatividade);
     }
     // Carrega/Atualiza o feed em tempo real assim que confirma o login
     escutarResenhasDoLivroAtual();
@@ -327,3 +361,10 @@ function atualizarLivroDoMes() {
 }
 
 window.atualizarLivroDoMes = atualizarLivroDoMes;
+
+// Força a página a buscar as resenhas atualizadas do localStorage toda vez que abre
+window.addEventListener('DOMContentLoaded', () => {
+    if (typeof exibirResenhas === 'function') {
+        exibirResenhas(); // Substitua pelo nome real da sua função de mostrar resenhas
+    }
+});
