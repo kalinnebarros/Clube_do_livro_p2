@@ -37,6 +37,7 @@ let usuarioLogado = null;
 let desativarEscutaResenhas = null; 
 
 // --- ⏳ SISTEMA DE LOGOUT POR INATIVIDADE ---
+// --- ⏳ SISTEMA DE LOGOUT POR INATIVIDADE ---
 let temporizadorInatividade;
 
 function resetarTemporizadorInatividade() {
@@ -44,19 +45,24 @@ function resetarTemporizadorInatividade() {
     
     // Se o usuário estiver logado, inicia a contagem regressiva
     if (usuarioLogado) {
-        // 15 minutos = 15 * 60 * 1000 milissegundos (Altere aqui se quiser mais ou menos tempo)
+        // 15 minutos = 15 * 60 * 1000 milissegundos
         temporizadorInatividade = setTimeout(fazerLogoutAutomatico, 15 * 60 * 1000); 
     }
 }
 
 function fazerLogoutAutomatico() {
-    if (usuarioLogado) {
-        console.log("Sessão expirada por inatividade. Efetuando logout...");
-        signOut(auth).then(() => {
-            window.location.href = "login.html";
-        }).catch((e) => console.error("Erro ao deslogar por inatividade:", e));
-    }
+    // Adicionado um log extra para você ver no console se rodar enquanto testa
+    console.log("Sessão expirada por inatividade. Efetuando logout...");
+    signOut(auth).then(() => {
+        window.location.href = "login.html";
+    }).catch((e) => console.error("Erro ao deslogar por inatividade:", e));
 }
+
+// Ouvintes agregados para evitar sobrecarga e capturar cliques/toques corretamente
+const eventosInteracao = ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart'];
+eventosInteracao.forEach(evento => {
+    window.addEventListener(evento, resetarTemporizadorInatividade);
+});
 
 // Ouvintes para detectar movimentos do usuário e redefinir o cronômetro
 window.addEventListener('load', resetarTemporizadorInatividade);
