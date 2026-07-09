@@ -5,6 +5,9 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
+// Oculta o conteúdo da página imediatamente ao carregar o script para evitar o "piscar"
+document.body.style.display = "none";
+
 // =========================================================================
 // 📚 CONFIGURAÇÃO MANUAL DO LIVRO DO MÊS
 // Mude para null se quiser deixar sem livro (ex: const LIVRO_MANUAL = null;)
@@ -15,8 +18,8 @@ const LIVRO_MANUAL = {
     autor: "Clare Leslie Hall",
     capa: "https://m.media-amazon.com/images/I/9150j9tc+6L.jpg", 
     descricao: "A história acompanha Beth, uma mulher simples que vive uma rotina pacata no interior de Dorset com o marido, Frank, e o cunhado, Jimmy. Os três formam uma família unida, até que um incidente inesperado abala a região: Jimmy atira em um cachorro que invade a fazenda. O animal pertence a ninguém menos que Gabriel Wolfe, o grande amor da adolescência de Beth, que partiu seu coração no passado e agora retorna à cidade com o filho, Leo.",
-    link: "https://drive.google.com/uc?export=download&id=1Y1a-UiY9r66IBx2g6KS8pk_-jwPxms7z", // 👈 ADICIONE O LINK DO EPUB AQUI
-    linkPDF: "https://drive.google.com/uc?export=download&id=SEU_ID_DO_ARQUIVO_PDF_AQUI" // 👈 ADICIONE O LINK DO PDF AQUI
+    link: "https://drive.google.com/uc?export=download&id=1Y1a-UiY9r66IBx2g6KS8pk_-jwPxms7z", 
+    linkPDF: "https://drive.google.com/uc?export=download&id=SEU_ID_DO_ARQUIVO_PDF_AQUI" 
 };
 // =========================================================================
 
@@ -38,13 +41,10 @@ let usuarioLogado = null;
 let desativarEscutaResenhas = null; 
 
 // --- ⏳ SISTEMA DE LOGOUT POR INATIVIDADE ---
-// --- ⏳ SISTEMA DE LOGOUT POR INATIVIDADE ---
 let temporizadorInatividade;
 
 function resetarTemporizadorInatividade() {
     clearTimeout(temporizadorInatividade);
-    
-    // Se o usuário estiver logado, inicia a contagem regressiva
     if (usuarioLogado) {
         // 30 minutos = 30 * 60 * 1000 milissegundos
         temporizadorInatividade = setTimeout(fazerLogoutAutomatico, 30 * 60 * 1000); 
@@ -58,15 +58,12 @@ function fazerLogoutAutomatico() {
     }).catch((e) => console.error("Erro ao deslogar por inatividade:", e));
 }
 
-// Ouvintes agregados para capturar cliques/toques e reiniciar o timer
 const eventosInteracao = ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart'];
 eventosInteracao.forEach(evento => {
     window.addEventListener(evento, resetarTemporizadorInatividade);
 });
 
-
-// --- CONTROLE DE ACESSO ---
-
+// --- CONTROLE DE ACESSO COM BLOQUEIO VISUAL ---
 onAuthStateChanged(auth, (user) => {
     if (user) {
         usuarioLogado = user;
@@ -74,20 +71,21 @@ onAuthStateChanged(auth, (user) => {
             const panel = document.getElementById('admin-panel');
             if(panel) panel.style.display = 'block';
         }
-        // Ativa o cronômetro de 30 min assim que o login é confirmado
         resetarTemporizadorInatividade();
-        
-        // Carrega/Atualiza o feed em tempo real agora que sabemos que está logado
         escutarResenhasDoLivroAtual();
+        
+        // Exibe o site apenas se o usuário estiver autenticado
+        document.body.style.display = "block";
     } else {
         console.log("Usuário não está logado. Redirecionando para o login...");
         usuarioLogado = null;
         clearTimeout(temporizadorInatividade);
         
-        // 🚨 ISSO FAZ O BLOQUEIO: Se tentarem acessar o link direto sem logar, vai para o login
+        // Envia imediatamente para a tela de login
         window.location.href = "login.html";
     }
 });
+
 // Inicializa os elementos da tela
 atualizarLivroDoMes();
 
@@ -154,7 +152,6 @@ window.alternarCurtida = async function(resenhaId, jaCurtiu) {
 };
 
 // --- FEED DE RESENHAS + COMENTÁRIOS EM TEMPO REAL ---
-// --- FEED DE RESENHAS + COMENTÁRIOS EM TEMPO REAL ---
 function escutarResenhasDoLivroAtual() {
     if (desativarEscutaResenhas) desativarEscutaResenhas();
     
@@ -180,7 +177,6 @@ function escutarResenhasDoLivroAtual() {
             return;
         }
 
-        // Usamos um for...of para conseguir usar await dentro do loop das resenhas
         for (const postDoc of snapshot.docs) {
             const res = postDoc.data();
             const id = postDoc.id;
@@ -190,10 +186,8 @@ function escutarResenhasDoLivroAtual() {
             const jaCurtiu = usuarioLogado && curtidas.includes(usuarioLogado.uid);
             const podeApagar = usuarioLogado && (usuarioLogado.uid === res.uid || usuarioLogado.uid === ADMIN_UID);
 
-            // 👥 BUSCAR NOMES DE QUEM CURTIU
             let nomesQuemCurtiu = [];
             if (qndeCurtidas > 0) {
-                // Busca o nome de cada UID que está na lista de curtidas
                 const promessas = curtidas.map(async (uidDonoDaCurtida) => {
                     try {
                         const userDoc = await getDoc(doc(db, "usuarios", uidDonoDaCurtida));
@@ -207,10 +201,7 @@ function escutarResenhasDoLivroAtual() {
                 });
                 nomesQuemCurtiu = await Promise.all(promessas);
             }
-            // Transforma a lista de nomes em um texto bonito separado por vírgula
-            const textoListaCurtidas = nomesQuemCurtiu.length > 0 
-                ? nomesQuemCurtiu.join(", ") 
-                : "Ninguém curtiu ainda";
+            const textoListaCurtidas = nomesQuemCurtiu.length > 0 ? nomesQuemCurtiu.join(", ") : "Ninguém curtiu ainda";
 
             const div = document.createElement('div');
             div.classList.add('review-post');
@@ -262,8 +253,6 @@ function escutarResenhasDoLivroAtual() {
                 </div>
             `;
             container.appendChild(div);
-
-            // Ativa uma escuta em tempo real específica para a caixinha de comentários desta resenha
             escutarComentariosDaResenha(id);
         }
     });
@@ -288,8 +277,6 @@ function escutarComentariosDaResenha(resenhaId) {
         snapshot.forEach(comDoc => {
             const com = comDoc.data();
             const idComentario = comDoc.id;
-            
-            // 🔐 Verifica se quem está vendo é o dono do comentário ou a ADM
             const podeApagarComentario = usuarioLogado && (usuarioLogado.uid === com.uid || usuarioLogado.uid === ADMIN_UID);
 
             const item = document.createElement('div');
@@ -372,12 +359,10 @@ function atualizarLivroDoMes() {
         display.innerHTML = `<p>🎲 O livro do mês ainda não foi sorteado...</p>`;
         if (labelResenha) labelResenha.innerText = "Aguardando próximo sorteio...";
     } else {
-        // Gera o botão de download do EPUB se o link existir
         const botaoDownloadEpub = LIVRO_MANUAL.link 
             ? `<a href="${LIVRO_MANUAL.link}" target="_blank" download="${LIVRO_MANUAL.titulo.replace(/\s+/g, '_')}.epub" style="display:inline-block; margin-top:15px; margin-right:10px; padding:8px 16px; background-color:#ef5f81; color:white; text-decoration:none; border-radius:20px; font-weight:bold; font-size:0.9rem;">📥 Baixar EPUB</a>`
             : '';
 
-        // Gera o botão de download do PDF se o link existir
         const botaoDownloadPdf = LIVRO_MANUAL.linkPDF 
             ? `<a href="${LIVRO_MANUAL.linkPDF}" target="_blank" download="${LIVRO_MANUAL.titulo.replace(/\s+/g, '_')}.pdf" style="display:inline-block; margin-top:15px; padding:8px 16px; background-color:#a91739; color:white; text-decoration:none; border-radius:20px; font-weight:bold; font-size:0.9rem;">📄 Baixar PDF</a>`
             : '';
@@ -404,7 +389,6 @@ function atualizarLivroDoMes() {
 }
 window.atualizarLivroDoMes = atualizarLivroDoMes;
 
-// Força a página a buscar as resenhas atualizadas do localStorage toda vez que abre
 window.addEventListener('DOMContentLoaded', () => {
     if (typeof exibirResenhas === 'function') {
         exibirResenhas(); 
