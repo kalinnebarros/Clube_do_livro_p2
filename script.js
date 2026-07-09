@@ -15,7 +15,8 @@ const LIVRO_MANUAL = {
     autor: "Clare Leslie Hall",
     capa: "https://m.media-amazon.com/images/I/9150j9tc+6L.jpg", 
     descricao: "A história acompanha Beth, uma mulher simples que vive uma rotina pacata no interior de Dorset com o marido, Frank, e o cunhado, Jimmy. Os três formam uma família unida, até que um incidente inesperado abala a região: Jimmy atira em um cachorro que invade a fazenda. O animal pertence a ninguém menos que Gabriel Wolfe, o grande amor da adolescência de Beth, que partiu seu coração no passado e agora retorna à cidade com o filho, Leo.",
-    link: "https://drive.google.com/uc?export=download&id=1Y1a-UiY9r66IBx2g6KS8pk_-jwPxms7z" // 👈 ADICIONE O LINK DO EPUB AQUI DENTRO DAS ASPAS A CADA MÊS
+    link: "https://drive.google.com/uc?export=download&id=1Y1a-UiY9r66IBx2g6KS8pk_-jwPxms7z", // 👈 ADICIONE O LINK DO EPUB AQUI
+    linkPDF: "https://drive.google.com/uc?export=download&id=SEU_ID_DO_ARQUIVO_PDF_AQUI" // 👈 ADICIONE O LINK DO PDF AQUI
 };
 // =========================================================================
 
@@ -37,7 +38,6 @@ let usuarioLogado = null;
 let desativarEscutaResenhas = null; 
 
 // --- ⏳ SISTEMA DE LOGOUT POR INATIVIDADE ---
-// --- ⏳ SISTEMA DE LOGOUT POR INATIVIDADE ---
 let temporizadorInatividade;
 
 function resetarTemporizadorInatividade() {
@@ -51,26 +51,17 @@ function resetarTemporizadorInatividade() {
 }
 
 function fazerLogoutAutomatico() {
-    // Adicionado um log extra para você ver no console se rodar enquanto testa
     console.log("Sessão expirada por inatividade. Efetuando logout...");
     signOut(auth).then(() => {
         window.location.href = "login.html";
     }).catch((e) => console.error("Erro ao deslogar por inatividade:", e));
 }
 
-// Ouvintes agregados para evitar sobrecarga e capturar cliques/toques corretamente
+// Ouvintes agregados para capturar cliques/toques e reiniciar o timer
 const eventosInteracao = ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart'];
 eventosInteracao.forEach(evento => {
     window.addEventListener(evento, resetarTemporizadorInatividade);
 });
-
-// Ouvintes para detectar movimentos do usuário e redefinir o cronômetro
-window.addEventListener('load', resetarTemporizadorInatividade);
-window.addEventListener('mousemove', resetarTemporizadorInatividade);
-window.addEventListener('mousedown', resetarTemporizadorInatividade);
-window.addEventListener('keypress', resetarTemporizadorInatividade);
-window.addEventListener('scroll', resetarTemporizadorInatividade);
-window.addEventListener('touchstart', resetarTemporizadorInatividade);
 
 
 // --- CONTROLE DE ACESSO ---
@@ -158,6 +149,7 @@ window.alternarCurtida = async function(resenhaId, jaCurtiu) {
 };
 
 // --- FEED DE RESENHAS + COMENTÁRIOS EM TEMPO REAL ---
+// --- FEED DE RESENHAS + COMENTÁRIOS EM TEMPO REAL ---
 function escutarResenhasDoLivroAtual() {
     if (desativarEscutaResenhas) desativarEscutaResenhas();
     
@@ -175,7 +167,7 @@ function escutarResenhasDoLivroAtual() {
         orderBy("dataCriacao", "desc")
     );
 
-    desativarEscutaResenhas = onSnapshot(q, (snapshot) => {
+    desativarEscutaResenhas = onSnapshot(q, async (snapshot) => {
         container.innerHTML = "";
         
         if (snapshot.empty) {
@@ -183,7 +175,8 @@ function escutarResenhasDoLivroAtual() {
             return;
         }
 
-        snapshot.forEach((postDoc) => {
+        // Usamos um for...of para conseguir usar await dentro do loop das resenhas
+        for (const postDoc of snapshot.docs) {
             const res = postDoc.data();
             const id = postDoc.id;
             
@@ -191,6 +184,28 @@ function escutarResenhasDoLivroAtual() {
             const qndeCurtidas = curtidas.length;
             const jaCurtiu = usuarioLogado && curtidas.includes(usuarioLogado.uid);
             const podeApagar = usuarioLogado && (usuarioLogado.uid === res.uid || usuarioLogado.uid === ADMIN_UID);
+
+            // 👥 BUSCAR NOMES DE QUEM CURTIU
+            let nomesQuemCurtiu = [];
+            if (qndeCurtidas > 0) {
+                // Busca o nome de cada UID que está na lista de curtidas
+                const promessas = curtidas.map(async (uidDonoDaCurtida) => {
+                    try {
+                        const userDoc = await getDoc(doc(db, "usuarios", uidDonoDaCurtida));
+                        if (userDoc.exists() && userDoc.data().usuario) {
+                            return `@${userDoc.data().usuario}`;
+                        }
+                        return "Membro do Clube";
+                    } catch (e) {
+                        return "Membro do Clube";
+                    }
+                });
+                nomesQuemCurtiu = await Promise.all(promessas);
+            }
+            // Transforma a lista de nomes em um texto bonito separado por vírgula
+            const textoListaCurtidas = nomesQuemCurtiu.length > 0 
+                ? nomesQuemCurtiu.join(", ") 
+                : "Ninguém curtiu ainda";
 
             const div = document.createElement('div');
             div.classList.add('review-post');
@@ -213,12 +228,20 @@ function escutarResenhasDoLivroAtual() {
                     <p>"${res.texto}"</p>
                     <div style="margin-bottom: 10px;">${"⭐".repeat(res.nota || 5)}</div>
                     
-                    <button 
-                        onclick="alternarCurtida('${id}', ${jaCurtiu})" 
-                        style="background: none; border: none; cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; gap: 5px; padding: 0; color: ${jaCurtiu ? '#ef5f81' : '#666'}; font-weight: ${jaCurtiu ? 'bold' : 'normal'};"
-                    >
-                        ${jaCurtiu ? '❤️' : '🤍'} <span>${qndeCurtidas} ${qndeCurtidas === 1 ? 'curtida' : 'curtidas'}</span>
-                    </button>
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <button 
+                            onclick="alternarCurtida('${id}', ${jaCurtiu})" 
+                            style="background: none; border: none; cursor: pointer; font-size: 1.1rem; padding: 0; color: ${jaCurtiu ? '#ef5f81' : '#666'};"
+                        >
+                            ${jaCurtiu ? '❤️' : '🤍'}
+                        </button>
+                        <span 
+                            title="Curtido por: ${textoListaCurtidas}" 
+                            style="font-size: 1.1rem; cursor: help; color: ${jaCurtiu ? '#ef5f81' : '#666'}; font-weight: ${jaCurtiu ? 'bold' : 'normal'}; border-bottom: 1px dashed #ccc;"
+                        >
+                            ${qndeCurtidas} ${qndeCurtidas === 1 ? 'curtida' : 'curtidas'}
+                        </span>
+                    </div>
                 </div>
 
                 <div style="background: #f7f7f7; padding: 12px; border-radius: 10px; margin-top: 15px;">
@@ -237,7 +260,7 @@ function escutarResenhasDoLivroAtual() {
 
             // Ativa uma escuta em tempo real específica para a caixinha de comentários desta resenha
             escutarComentariosDaResenha(id);
-        });
+        }
     });
 }
 
@@ -298,6 +321,7 @@ window.deletarComentario = async function(resenhaId, comentarioId) {
         alert("Você não tem permissão para apagar este comentário.");
     }
 };
+
 // --- FUNÇÃO ADICIONAR COMENTÁRIO ---
 window.postarComentario = async function(resenhaId) {
     const input = document.getElementById(`input-comentario-${resenhaId}`);
@@ -343,9 +367,14 @@ function atualizarLivroDoMes() {
         display.innerHTML = `<p>🎲 O livro do mês ainda não foi sorteado...</p>`;
         if (labelResenha) labelResenha.innerText = "Aguardando próximo sorteio...";
     } else {
-        // Gera o botão de download apenas se a propriedade "link" contiver um texto válido
-        const botaoDownload = LIVRO_MANUAL.link 
-            ? `<a href="${LIVRO_MANUAL.link}" target="_blank" download="${LIVRO_MANUAL.titulo.replace(/\s+/g, '_')}.epub" style="display:inline-block; margin-top:15px; padding:8px 16px; background-color:#ef5f81; color:white; text-decoration:none; border-radius:20px; font-weight:bold; font-size:0.9rem;">📥 Baixar EPUB</a>`
+        // Gera o botão de download do EPUB se o link existir
+        const botaoDownloadEpub = LIVRO_MANUAL.link 
+            ? `<a href="${LIVRO_MANUAL.link}" target="_blank" download="${LIVRO_MANUAL.titulo.replace(/\s+/g, '_')}.epub" style="display:inline-block; margin-top:15px; margin-right:10px; padding:8px 16px; background-color:#ef5f81; color:white; text-decoration:none; border-radius:20px; font-weight:bold; font-size:0.9rem;">📥 Baixar EPUB</a>`
+            : '';
+
+        // Gera o botão de download do PDF se o link existir
+        const botaoDownloadPdf = LIVRO_MANUAL.linkPDF 
+            ? `<a href="${LIVRO_MANUAL.linkPDF}" target="_blank" download="${LIVRO_MANUAL.titulo.replace(/\s+/g, '_')}.pdf" style="display:inline-block; margin-top:15px; padding:8px 16px; background-color:#a91739; color:white; text-decoration:none; border-radius:20px; font-weight:bold; font-size:0.9rem;">📄 Baixar PDF</a>`
             : '';
 
         display.innerHTML = `
@@ -358,19 +387,21 @@ function atualizarLivroDoMes() {
                     <h4 style="margin:0; color:#ef5f81; font-size:1.5rem; text-transform: capitalize;">${LIVRO_MANUAL.titulo || 'Sem título'}</h4>
                     <p style="margin:5px 0;"><strong>Autor:</strong> ${LIVRO_MANUAL.autor || 'Desconhecido'}</p>
                     <p style="font-size:0.9rem; color:#555; margin:0; line-height: 1.4;">${LIVRO_MANUAL.descricao || 'Sem descrição cadastrada.'}</p>
-                    ${botaoDownload}
+                    <div style="display:flex; flex-wrap:wrap;">
+                        ${botaoDownloadEpub}
+                        ${botaoDownloadPdf}
+                    </div>
                 </div>
             </div>
         `;
         if (labelResenha) labelResenha.innerText = `Lendo: ${LIVRO_MANUAL.titulo}`;
     }
 }
-
 window.atualizarLivroDoMes = atualizarLivroDoMes;
 
 // Força a página a buscar as resenhas atualizadas do localStorage toda vez que abre
 window.addEventListener('DOMContentLoaded', () => {
     if (typeof exibirResenhas === 'function') {
-        exibirResenhas(); // Substitua pelo nome real da sua função de mostrar resenhas
+        exibirResenhas(); 
     }
 });
