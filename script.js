@@ -12,7 +12,7 @@ document.body.style.display = "none";
 // 📚 CONFIGURAÇÃO MANUAL DO LIVRO DO MÊS
 // Mude para null se quiser deixar sem livro (ex: const LIVRO_MANUAL = null;)
 // =========================================================================
-const LIVRO_MANUAL = {
+const LIVRO_MANUAL = null /*{
     id: "terrapartida2026", 
     titulo: "Terra Partida",
     autor: "Clare Leslie Hall",
@@ -20,7 +20,7 @@ const LIVRO_MANUAL = {
     descricao: "A história acompanha Beth, uma mulher simples que vive uma rotina pacata no interior de Dorset com o marido, Frank, e o cunhado, Jimmy. Os três formam uma família unida, até que um incidente inesperado abala a região: Jimmy atira em um cachorro que invade a fazenda. O animal pertence a ninguém menos que Gabriel Wolfe, o grande amor da adolescência de Beth, que partiu seu coração no passado e agora retorna à cidade com o filho, Leo.",
     link: "https://drive.google.com/uc?export=download&id=1Y1a-UiY9r66IBx2g6KS8pk_-jwPxms7z", 
     linkPDF: "https://drive.google.com/uc?export=download&id=SEU_ID_DO_ARQUIVO_PDF_AQUI" 
-};
+};*/
 // =========================================================================
 
 const firebaseConfig = {
