@@ -38,6 +38,7 @@ let usuarioLogado = null;
 let desativarEscutaResenhas = null; 
 
 // --- ⏳ SISTEMA DE LOGOUT POR INATIVIDADE ---
+// --- ⏳ SISTEMA DE LOGOUT POR INATIVIDADE ---
 let temporizadorInatividade;
 
 function resetarTemporizadorInatividade() {
@@ -45,8 +46,8 @@ function resetarTemporizadorInatividade() {
     
     // Se o usuário estiver logado, inicia a contagem regressiva
     if (usuarioLogado) {
-        // 15 minutos = 15 * 60 * 1000 milissegundos
-        temporizadorInatividade = setTimeout(fazerLogoutAutomatico, 15 * 60 * 1000); 
+        // 30 minutos = 30 * 60 * 1000 milissegundos
+        temporizadorInatividade = setTimeout(fazerLogoutAutomatico, 30 * 60 * 1000); 
     }
 }
 
@@ -65,6 +66,7 @@ eventosInteracao.forEach(evento => {
 
 
 // --- CONTROLE DE ACESSO ---
+
 onAuthStateChanged(auth, (user) => {
     if (user) {
         usuarioLogado = user;
@@ -72,17 +74,20 @@ onAuthStateChanged(auth, (user) => {
             const panel = document.getElementById('admin-panel');
             if(panel) panel.style.display = 'block';
         }
-        // Ativa o cronômetro assim que o login é confirmado
+        // Ativa o cronômetro de 30 min assim que o login é confirmado
         resetarTemporizadorInatividade();
+        
+        // Carrega/Atualiza o feed em tempo real agora que sabemos que está logado
+        escutarResenhasDoLivroAtual();
     } else {
-        console.log("Usuário não está logado no Firebase no momento.");
+        console.log("Usuário não está logado. Redirecionando para o login...");
         usuarioLogado = null;
         clearTimeout(temporizadorInatividade);
+        
+        // 🚨 ISSO FAZ O BLOQUEIO: Se tentarem acessar o link direto sem logar, vai para o login
+        window.location.href = "login.html";
     }
-    // Carrega/Atualiza o feed em tempo real assim que confirma o login
-    escutarResenhasDoLivroAtual();
 });
-
 // Inicializa os elementos da tela
 atualizarLivroDoMes();
 
