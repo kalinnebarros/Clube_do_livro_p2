@@ -12,15 +12,15 @@ document.body.style.display = "none";
 // 📚 CONFIGURAÇÃO MANUAL DO LIVRO DO MÊS
 // Mude para null se quiser deixar sem livro (ex: const LIVRO_MANUAL = null;)
 // =========================================================================
-const LIVRO_MANUAL = null /*{
-    id: "terrapartida2026", 
-    titulo: "Terra Partida",
-    autor: "Clare Leslie Hall",
-    capa: "https://m.media-amazon.com/images/I/9150j9tc+6L.jpg", 
-    descricao: "A história acompanha Beth, uma mulher simples que vive uma rotina pacata no interior de Dorset com o marido, Frank, e o cunhado, Jimmy. Os três formam uma família unida, até que um incidente inesperado abala a região: Jimmy atira em um cachorro que invade a fazenda. O animal pertence a ninguém menos que Gabriel Wolfe, o grande amor da adolescência de Beth, que partiu seu coração no passado e agora retorna à cidade com o filho, Leo.",
-    link: "https://drive.google.com/uc?export=download&id=1Y1a-UiY9r66IBx2g6KS8pk_-jwPxms7z", 
-    linkPDF: "https://drive.google.com/uc?export=download&id=SEU_ID_DO_ARQUIVO_PDF_AQUI" 
-};*/
+const LIVRO_MANUAL = {
+    id: "Vidas_secas26", 
+    titulo: "Vidas Secas",
+    autor: "Graciliano Ramos",
+    capa: "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSkr3v4DGqY3u0EXq_Wehl9uKdTVjMfioLzzDNbsHfph3vWGRQibFRDC9tBu3to-9VpIFRUPAvoQmAgEeGshwHZCB3ExZ8nPFWABiQs3G4&usqp=CAc", 
+    descricao: "Vidas Secas, obra de Graciliano Ramos publicada em 1938, narra a saga de uma família de retirantes nordestinos no sertão. Fugindo da seca e da miséria, a história aborda a desumanização, a pobreza extrema e a exploração social",
+    link: "https://drive.google.com/file/d/1OoCCArYi0_qrGLnDR2QLApLht4zLmlyP/view?usp=drive_link", 
+    linkPDF: "https://drive.google.com/file/d/1kGpGR59xundPef1ao8kgWTLArtQ020XH/view?usp=drive_link" 
+};
 // =========================================================================
 
 const firebaseConfig = {
