@@ -18,8 +18,8 @@ const LIVRO_MANUAL = {
     autor: "Graciliano Ramos",
     capa: "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSkr3v4DGqY3u0EXq_Wehl9uKdTVjMfioLzzDNbsHfph3vWGRQibFRDC9tBu3to-9VpIFRUPAvoQmAgEeGshwHZCB3ExZ8nPFWABiQs3G4&usqp=CAc", 
     descricao: "Vidas Secas, obra de Graciliano Ramos publicada em 1938, narra a saga de uma família de retirantes nordestinos no sertão. Fugindo da seca e da miséria, a história aborda a desumanização, a pobreza extrema e a exploração social",
-    link: "https://drive.google.com/file/d/1OoCCArYi0_qrGLnDR2QLApLht4zLmlyP/view?usp=drive_link", 
-    linkPDF: "https://drive.google.com/file/d/1kGpGR59xundPef1ao8kgWTLArtQ020XH/view?usp=drive_link" 
+    link: "https://drive.google.com/file/d/1OoCCArYi0_qrGLnDR2QLApLht4zLmlyP/view?usp=sharing", 
+    linkPDF: "https://drive.google.com/file/d/1kGpGR59xundPef1ao8kgWTLArtQ020XH/view?usp=sharing" 
 };
 // =========================================================================
 
