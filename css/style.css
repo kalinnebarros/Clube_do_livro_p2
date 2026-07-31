@@ -1,0 +1,544 @@
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f2d1;
+    color: #333;
+    width: 100%;
+    min-height: 100vh;
+
+    /* Entrada suave da página */
+    animation: pageEnter 0.5s ease-out;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+
+/* --- ACESSIBILIDADE --- */
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+
+/* --- CABEÇALHO --- */
+
+header {
+    background: #ef5f81;
+    color: white;
+    padding: 1rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    position: relative;
+    z-index: 10;
+}
+
+.header-content {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-size: 1.4rem;
+    margin: 0;
+    white-space: nowrap;
+}
+
+header ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.95rem;
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+    display: inline-block;
+}
+
+header a:hover {
+    opacity: 0.8;
+    transform: translateY(-1px);
+}
+
+header a:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+
+/* --- SEÇÕES --- */
+
+section {
+    padding: 2rem 5%;
+    width: 100%;
+}
+
+
+/* --- HERO --- */
+
+#hero {
+    text-align: center;
+    background: #d0a4ff;
+    border-radius: 15px;
+    margin: 20px auto;
+    max-width: 100%;
+    padding: 25px 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+
+    animation: fadeUp 0.6s ease-out;
+}
+
+#hero h2 {
+    margin-top: 0;
+}
+
+#hero p {
+    margin-bottom: 0;
+}
+
+#hero p span {
+    font-weight: 600;
+}
+
+
+/* --- LIVRO DO MÊS --- */
+
+#book-of-the-month {
+    animation: fadeUp 0.7s ease-out;
+}
+
+#book-display {
+    width: 100%;
+}
+
+
+/* --- FORMULÁRIO DE RESENHAS --- */
+
+.review-form {
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    border: 2px solid #d0a4ff;
+    margin-bottom: 40px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+
+    animation: fadeUp 0.8s ease-out;
+}
+
+.review-form h4 {
+    color: #a91739;
+    margin: 0 0 10px;
+}
+
+.review-form textarea,
+.review-form select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    background: #fafafa;
+    font-size: 1rem;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.review-form textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.review-form textarea:focus,
+.review-form select:focus {
+    outline: none;
+    border-color: #ef5f81;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(239, 95, 129, 0.1);
+}
+
+.form-footer {
+    display: flex;
+    gap: 15px;
+    justify-content: space-between;
+    align-items: end;
+    flex-wrap: wrap;
+}
+
+.rating-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.rating-field label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #666;
+}
+
+.rating-field select {
+    width: auto;
+    min-width: 130px;
+    margin: 0;
+}
+
+.review-form button {
+    background: #ef5f81;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    width: auto;
+
+    transition:
+        transform 0.2s ease,
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.review-form button:hover {
+    background-color: #d94d6d;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(239, 95, 129, 0.25);
+}
+
+.review-form button:active {
+    transform: translateY(0);
+}
+
+.review-form button:focus-visible {
+    outline: 2px solid #a91739;
+    outline-offset: 3px;
+}
+
+.review-help {
+    display: block;
+    margin-top: 8px;
+    color: #777;
+    font-size: 0.8rem;
+}
+
+
+/* --- FEED DE RESENHAS --- */
+
+#reviews-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+.review-post {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+
+    animation: reviewEnter 0.45s ease-out both;
+}
+
+.review-post:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+}
+
+
+/* --- AVATAR --- */
+
+.avatar-circle {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    min-height: 42px;
+    background: #d0a4ff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+    overflow: hidden;
+    border: 2px solid #ef5f81;
+}
+
+.avatar-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+/* --- PAINEL ADMINISTRATIVO --- */
+
+#admin-panel {
+    background: #fff;
+    border: 2px dashed #ef5f81;
+    border-radius: 15px;
+    margin: 10px auto;
+    max-width: 100%;
+    text-align: center;
+    padding: 15px;
+}
+
+
+/* --- LOGIN --- */
+
+.body-login {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 100vh !important;
+    background-color: #fcf8f2 !important;
+    padding: 20px !important;
+}
+
+.header-login {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    justify-content: center !important;
+    padding: 15px 0;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 0;
+    margin: 80px auto 0 auto;
+}
+
+.auth-box {
+    background: white;
+    padding: 30px 20px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(239, 95, 129, 0.08);
+    text-align: center;
+    width: 100%;
+}
+
+.auth-box h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: #444;
+    font-size: 1.4rem;
+}
+
+.auth-box input {
+    width: 100%;
+    padding: 12px 16px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background-color: #fafafa;
+}
+
+.auth-box input:focus {
+    border-color: #ef5f81;
+    background-color: white;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(239, 95, 129, 0.1);
+}
+
+.auth-box button {
+    width: 100%;
+    padding: 14px;
+    background-color: #ef5f81;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        transform 0.1s ease;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.auth-box button:hover {
+    background-color: #d94d6d;
+    transform: translateY(-1px);
+}
+
+.auth-box p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.auth-box p a {
+    color: #ef5f81;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+
+/* =========================================================================
+   📱 RESPONSIVIDADE
+   ========================================================================= */
+
+@media (max-width: 768px) {
+
+    header {
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px;
+        text-align: center;
+    }
+
+    .header-content {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    header ul {
+        gap: 15px;
+    }
+
+    header h1 {
+        font-size: 1.3rem;
+    }
+
+    section {
+        padding: 1rem 4%;
+    }
+
+    #book-display > div {
+        flex-direction: column !important;
+        text-align: center;
+        padding: 15px !important;
+        gap: 15px !important;
+    }
+
+    #book-display img {
+        width: 180px !important;
+        height: 260px !important;
+        margin: 0 auto;
+    }
+
+    .form-footer {
+        align-items: stretch;
+    }
+
+    .rating-field,
+    .rating-field select,
+    .review-form button {
+        width: 100%;
+    }
+
+    .review-form button {
+        width: 100%;
+    }
+}
+
+
+/* =========================================================================
+   ✨ ANIMAÇÕES
+   ========================================================================= */
+
+@keyframes pageEnter {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes reviewEnter {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Respeita usuários que preferem menos movimento */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
