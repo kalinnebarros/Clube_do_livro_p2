@@ -12,7 +12,7 @@ document.body.style.display = "none";
 // 📚 CONFIGURAÇÃO MANUAL DO LIVRO DO MÊS
 // Mude para null se quiser deixar sem livro (ex: const LIVRO_MANUAL = null;)
 // =========================================================================
-const LIVRO_MANUAL = {
+const LIVRO_MANUAL =null /* {
     id: "Vidas_secas26", 
     titulo: "Vidas Secas",
     autor: "Graciliano Ramos",
@@ -20,7 +20,7 @@ const LIVRO_MANUAL = {
     descricao: "Vidas Secas, obra de Graciliano Ramos publicada em 1938, narra a saga de uma família de retirantes nordestinos no sertão. Fugindo da seca e da miséria, a história aborda a desumanização, a pobreza extrema e a exploração social",
     link: "https://drive.google.com/file/d/1OoCCArYi0_qrGLnDR2QLApLht4zLmlyP/view?usp=sharing", 
     linkPDF: "https://drive.google.com/file/d/1kGpGR59xundPef1ao8kgWTLArtQ020XH/view?usp=sharing" 
-};
+};*/
 // =========================================================================
 
 const firebaseConfig = {
