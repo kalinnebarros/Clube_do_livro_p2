@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="toast" class="toast"></div>
+
     <header>
         <h1>👤 Meu Perfil</h1>
         <nav>
@@ -15,35 +17,59 @@
         </nav>
     </header>
 
-   <main class="perfil-container">
-    <div class="perfil-card">
-        <div id="perfil-avatar" class="avatar-grande">?</div>
-        
-        <div class="campo-perfil">
-            <label>Nome de Usuário:</label>
-            <input type="text" id="perfil-nome">
-        </div>
+    <main class="perfil-container">
+        <div class="perfil-card">
+            
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div id="perfil-avatar" class="avatar-grande">?</div>
 
-        <div class="campo-perfil">
-            <label>E-mail:</label>
-            <input type="email" id="perfil-email" disabled> 
-            <small>(E-mail não pode ser alterado)</small>
-        </div>
+                <input type="file" id="perfil-foto-arquivo" accept="image/*" style="display: none;" onchange="atualizarTextoFoto(this)">
 
-        <div class="campo-perfil">
-            <label>Trocar Foto de Perfil:</label>
-            <input type="file" id="perfil-foto-arquivo" accept="image/*">
-        </div>
+                <label for="perfil-foto-arquivo" id="label-foto" style="
+                    display: inline-block;
+                    margin-top: 12px;
+                    padding: 8px 16px;
+                    background-color: #ffffff;
+                    color: #ef5f81;
+                    border: 1px solid #ef5f81;
+                    border-radius: 20px;
+                    font-weight: bold;
+                    font-size: 0.85rem;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                ">
+                    📷 Alterar Foto de Perfil
+                </label>
+            </div>
 
-        <div class="perfil-acoes">
-            <button class="btn-salvar" onclick="salvarAlteracoes()">Salvar Alterações</button>
-            <button class="btn-senha" onclick="esqueciSenha()">Redefinir Senha</button>
+            <div id="perfil-stats" style="display: flex; justify-content: center; background: #fff5f7; padding: 15px; border-radius: 12px; margin: 15px 0; border: 1px solid #ffe0e6;">
+                <div style="text-align: center;">
+                    <span id="stat-resenhas" style="display: block; font-size: 1.6rem; font-weight: bold; color: #ef5f81;">0</span>
+                    <span style="font-size: 0.8rem; color: #666;">Resenhas ✍️</span>
+                </div>
+            </div>
+
+            <div class="campo-perfil">
+                <label>Nome de Usuário:</label>
+                <input type="text" id="perfil-nome">
+            </div>
+
+            <div class="campo-perfil">
+                <label>E-mail:</label>
+                <input type="email" id="perfil-email" disabled> 
+                <small style="color: #888; font-size: 0.75rem;">(E-mail não pode ser alterado)</small>
+            </div>
+
+            <div class="perfil-acoes" style="margin-top: 20px;">
+                <button class="btn-salvar" onclick="salvarAlteracoes()">Salvar Alterações</button>
+                <button class="btn-senha" onclick="esqueciSenha()">Redefinir Senha</button>
+            </div>
+
+            <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;">
+            <button class="btn-sair" onclick="sair()">Sair da Conta</button>
+
         </div>
-        
-        <hr>
-        <button class="btn-sair" onclick="sair()">Sair da Conta</button>
-    </div>
-</main>
+    </main>
 
     <script type="module" src="perfil.js"></script>
 </body>

@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, updateProfile, sendPasswordResetEmail, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBVqYSFgmI1MZ5wRWCD8r6SyerQ6cQ5WEQ",
@@ -17,20 +17,18 @@ const db = getFirestore(app);
 
 onAuthStateChanged(auth, async (user) => {
     if (user) {
-        // 1. Preenche o nome e e-mail vindos do login
         document.getElementById('perfil-nome').value = user.displayName || "";
         document.getElementById('perfil-email').value = user.email || ""; 
         
         const avatarContainer = document.getElementById('perfil-avatar');
         if (avatarContainer) {
-            // Estilização forçada de segurança absoluta para o avatar redondo
             avatarContainer.style.width = "120px";
             avatarContainer.style.height = "120px";
             avatarContainer.style.borderRadius = "50%";
             avatarContainer.style.display = "flex";
             avatarContainer.style.alignItems = "center";
             avatarContainer.style.justifyContent = "center";
-            avatarContainer.style.margin = "20px auto"; // Espaço centralizado perfeito
+            avatarContainer.style.margin = "0 auto";
             avatarContainer.style.background = "#ef5f81";
             avatarContainer.style.color = "white";
             avatarContainer.style.fontSize = "2.5rem";
@@ -38,7 +36,6 @@ onAuthStateChanged(auth, async (user) => {
             avatarContainer.style.overflow = "hidden"; 
             avatarContainer.style.boxShadow = "0 4px 12px rgba(0,0,0,0.1)";
 
-            // 2. Busca a foto no Firestore
             try {
                 const docRef = doc(db, "usuarios", user.uid);
                 const docSnap = await getDoc(docRef);
@@ -56,78 +53,12 @@ onAuthStateChanged(auth, async (user) => {
             }
         }
 
-        // --- ORGANIZAÇÃO VISUAL COMPLETA DA PÁGINA PERFIL ---
-        organizarLayoutFormulario();
-
+        carregarContadorResenhas(user.uid);
     } else {
         window.location.href = "login.html";
     }
 });
 
-// Organiza as caixas, botões e labels centralizados em formato de painel
-function organizarLayoutFormulario() {
-    // 1. Tenta encontrar ou criar um contêiner centralizado para o formulário
-    const avatar = document.getElementById('perfil-avatar');
-    if (!avatar) return;
-    
-    const pai = avatar.parentElement;
-    if (pai) {
-        pai.style.maxWidth = "450px";
-        pai.style.margin = "40px auto";
-        pai.style.padding = "25px";
-        pai.style.background = "#ffffff";
-        pai.style.borderRadius = "20px";
-        pai.style.boxShadow = "0 4px 20px rgba(0,0,0,0.05)";
-        pai.style.fontFamily = "sans-serif";
-    }
-
-    // 2. Estiliza os inputs (caixas de texto)
-    const inputs = ['perfil-nome', 'perfil-email'];
-    inputs.forEach(id => {
-        const campo = document.getElementById(id);
-        if (campo) {
-            campo.style.width = "100%";
-            campo.style.boxSizing = "border-box";
-            campo.style.padding = "12px";
-            campo.style.margin = "6px 0 16px 0";
-            campo.style.borderRadius = "10px";
-            campo.style.border = "1px solid #e0e0e0";
-            campo.style.fontSize = "1rem";
-            campo.style.background = id === 'perfil-email' ? "#f9f9f9" : "#ffffff";
-        }
-    });
-
-    // 3. Modifica a estilização visual dos botões para ficarem lindos e padronizados
-    const botoes = document.getElementsByTagName('button');
-    for (let btn of botoes) {
-        btn.style.padding = "12px 20px";
-        btn.style.margin = "5px 4px";
-        btn.style.borderRadius = "10px";
-        btn.style.border = "none";
-        btn.style.cursor = "pointer";
-        btn.style.fontWeight = "bold";
-        btn.style.fontSize = "0.95rem";
-        btn.style.transition = "all 0.2s";
-
-        if (btn.innerText.includes("Salvar")) {
-            btn.style.background = "#ef5f81";
-            btn.style.color = "white";
-            btn.style.width = "100%"; // Botão principal largo
-            btn.style.margin = "10px 0";
-        } else if (btn.innerText.includes("Redefinir") || btn.innerText.includes("Senha")) {
-            btn.style.background = "#f0f0f0";
-            btn.style.color = "#444";
-        } else if (btn.innerText.includes("Sair")) {
-            btn.style.background = "#fff";
-            btn.style.color = "#ef5f81";
-            btn.style.border = "1px solid #ef5f81";
-            btn.style.width = "100%";
-            btn.style.marginTop = "25px";
-        }
-    }
-}
-
-// Função para converter foto em texto (Base64)
 function transformarEmTexto(arquivo) {
     return new Promise((resolve, reject) => {
         const leitor = new FileReader();
@@ -143,10 +74,14 @@ window.salvarAlteracoes = async function() {
     const arquivoFoto = document.getElementById('perfil-foto-arquivo').files[0];
     
     if (!user) return;
-    if (!novoNome.trim()) return alert("O nome não pode ficar vazio! 😉");
+    if (!novoNome.trim()) {
+        mostrarToast("O nome não pode ficar vazio! ", "erro");
+        return;
+    }
 
     try {
         if (arquivoFoto) {
+            // Se o usuário selecionou uma nova foto, converte e salva
             const fotoTexto = await transformarEmTexto(arquivoFoto);
             
             await setDoc(doc(db, "usuarios", user.uid), {
@@ -155,26 +90,71 @@ window.salvarAlteracoes = async function() {
                 email: user.email
             }, { merge: true });
         } else {
+            // Se NÃO selecionou foto, atualiza apenas o nome sem mexer na foto que já existe no banco
             await setDoc(doc(db, "usuarios", user.uid), {
                 nome: novoNome
             }, { merge: true });
         }
 
+        // Atualiza o nome no Firebase Auth
         await updateProfile(user, { displayName: novoNome });
 
-        alert("Perfil das Mais Mais atualizado com sucesso! ✨");
-        location.reload();
+        // Aviso flutuante em vez de alert nativo
+        mostrarToast("Perfil atualizado! ✨", "sucesso");
+        
+        // Atualiza a tela após 1.5s para aplicar as mudanças
+        setTimeout(() => location.reload(), 1500);
+
     } catch (e) {
         console.error(e);
-        alert("Erro ao salvar: " + e.message);
+        mostrarToast("Erro ao salvar: " + e.message, "erro");
     }
 };
 
 window.esqueciSenha = () => {
     if (!auth.currentUser) return;
     sendPasswordResetEmail(auth, auth.currentUser.email)
-        .then(() => alert("E-mail de troca de senha enviado! Verifique sua caixa de entrada."))
+        .then(() => alert("E-mail de troca de senha enviado!"))
         .catch(e => alert("Erro: " + e.message));
 };
 
 window.sair = () => signOut(auth).then(() => window.location.href = "login.html");
+
+async function carregarContadorResenhas(uid) {
+    const elResenhas = document.getElementById('stat-resenhas');
+    if (!elResenhas) return;
+
+    try {
+        const q = query(collection(db, "resenhas"), where("uid", "==", uid));
+        const querySnapshot = await getDocs(q);
+        elResenhas.innerText = querySnapshot.size;
+    } catch (error) {
+        console.error("Erro ao carregar quantidade de resenhas:", error);
+    }
+}
+
+window.atualizarTextoFoto = function(input) {
+    const label = document.getElementById('label-foto');
+    if (label && input.files && input.files[0]) {
+        label.innerText = "💋 Foto Selecionada!";
+        label.style.background = "#e8f5e9";
+        label.style.color = "#c485e3";
+        label.style.borderColor = "#914bbc";
+    }
+};
+// Função para exibir o aviso flutuante
+window.mostrarToast = function(mensagem, tipo = 'padrao') {
+    const toast = document.getElementById('toast');
+    if (!toast) {
+        // Caso o elemento não exista por algum motivo, usa um alert simples de segurança
+        alert(mensagem);
+        return;
+    }
+
+    toast.innerText = mensagem;
+    toast.className = `toast show ${tipo}`;
+
+    setTimeout(() => {
+        toast.className = toast.className.replace("show", "").trim();
+    }, 3000);
+};

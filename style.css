@@ -151,6 +151,105 @@ section {
     object-fit: cover;
 }
 
+/* =========================================================================
+   👤 ESTILOS DA TELA DE PERFIL (CARD CENTRALIZADO E COMPACTO)
+   ========================================================================= */
+.perfil-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 15px;
+    box-sizing: border-box;
+}
+
+.perfil-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 420px; /* Garante que o card fique compacto e retome o tamanho original */
+    padding: 30px 25px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+}
+
+.campo-perfil {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.campo-perfil label {
+    display: block;
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    color: #444;
+}
+
+.campo-perfil input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+    background-color: #ffffff;
+}
+
+.campo-perfil input:disabled {
+    background-color: #f9f9f9;
+    color: #777;
+}
+
+.perfil-acoes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-salvar {
+    background: #ef5f81;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    width: 100%;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-senha {
+    background: #f0f0f0;
+    color: #444;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    width: 100%;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-sair {
+    background: transparent;
+    color: #ef5f81;
+    border: 1px solid #ef5f81;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    width: 100%;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-salvar:hover { opacity: 0.9; }
+.btn-senha:hover { background: #e5e5e5; }
+.btn-sair:hover { background: #fff5f7; }
+
 /* --- 🔐 ESTILOS EXCLUSIVOS DA TELA DE LOGIN --- */
 .body-login {
     display: flex !important;
@@ -285,4 +384,42 @@ section {
     .review-form button {
         width: 100%;
     }
+}
+
+button, #btn-marcar-lido {
+    cursor: pointer !important;
+}
+
+/* --- AVISO FLUTUANTE (TOAST) --- */
+.toast {
+    visibility: hidden;
+    min-width: 250px;
+    background-color: #ef5f81;
+    color: #fff;
+    text-align: center;
+    border-radius: 12px;
+    padding: 14px 20px;
+    position: fixed;
+    z-index: 1000;
+    right: 20px;
+    top: 20px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    transition: opacity 0.3s ease, top 0.3s ease, visibility 0.3s;
+}
+
+.toast.show {
+    visibility: visible;
+    opacity: 1;
+    top: 30px;
+}
+
+/* Cor especial para avisos de Sucesso e Erro (Opcional) */
+.toast.sucesso { background-color: #428fa9fd; }
+.toast.erro { background-color: #d32f2f; }
+
+html {
+    scroll-behavior: smooth;
 }

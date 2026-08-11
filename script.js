@@ -1,18 +1,33 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { 
     getFirestore, collection, addDoc, onSnapshot, query, orderBy, where, 
-    serverTimestamp, doc, updateDoc, getDoc, arrayUnion, arrayRemove, deleteDoc 
+    serverTimestamp, doc, updateDoc, setDoc, getDoc, arrayUnion, arrayRemove, deleteDoc 
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 // Oculta o conteúdo da página imediatamente ao carregar o script para evitar o "piscar"
 document.body.style.display = "none";
 
+// --- FUNÇÃO PARA EXIBIR O AVISO FLUTUANTE (TOAST) ---
+window.mostrarToast = function(mensagem, tipo = 'padrao') {
+    const toast = document.getElementById('toast');
+    if (!toast) {
+        alert(mensagem);
+        return;
+    }
+
+    toast.innerText = mensagem;
+    toast.className = `toast show ${tipo}`;
+
+    setTimeout(() => {
+        toast.className = toast.className.replace("show", "").trim();
+    }, 3000);
+};
+
 // =========================================================================
 // 📚 CONFIGURAÇÃO MANUAL DO LIVRO DO MÊS
-// Mude para null se quiser deixar sem livro (ex: const LIVRO_MANUAL = null;)
-// =========================================================================
-const LIVRO_MANUAL =null /* {
+
+const LIVRO_MANUAL = null/*{
     id: "Vidas_secas26", 
     titulo: "Vidas Secas",
     autor: "Graciliano Ramos",
@@ -46,7 +61,6 @@ let temporizadorInatividade;
 function resetarTemporizadorInatividade() {
     clearTimeout(temporizadorInatividade);
     if (usuarioLogado) {
-        // 30 minutos = 30 * 60 * 1000 milissegundos
         temporizadorInatividade = setTimeout(fazerLogoutAutomatico, 30 * 60 * 1000); 
     }
 }
@@ -74,33 +88,30 @@ onAuthStateChanged(auth, (user) => {
         resetarTemporizadorInatividade();
         escutarResenhasDoLivroAtual();
         
-        // Exibe o site apenas se o usuário estiver autenticado
         document.body.style.display = "block";
+        verificarSeLivroFoiLido();
     } else {
         console.log("Usuário não está logado. Redirecionando para o login...");
         usuarioLogado = null;
         clearTimeout(temporizadorInatividade);
-        
-        // Envia imediatamente para a tela de login
         window.location.href = "login.html";
     }
 });
 
-// Inicializa os elementos da tela
 atualizarLivroDoMes();
 
 window.sair = () => signOut(auth).then(() => window.location.href = "login.html");
 
-// --- FUNÇÃO POSTAR RESENHA (PROTEGIDA CONTRA CLIQUES DUPLOS) ---
+// --- FUNÇÃO POSTAR RESENHA ---
 window.postarResenha = async function() {
     const textoArea = document.getElementById('input-texto');
     const texto = textoArea.value;
     const nota = document.getElementById('input-nota').value;
     const btnPublicar = document.getElementById('btn-publicar') || document.querySelector('button[onclick="postarResenha()"]');
 
-    if (!usuarioLogado) return alert("Aguarde o login ou faça login para publicar! 😉");
-    if (!LIVRO_MANUAL) return alert("Não há um livro definido para resenhar no momento!");
-    if (!texto.trim()) return alert("Escreva sua resenha antes de publicar! 😉");
+    if (!usuarioLogado) return mostrarToast("Aguarde o login ou faça login para publicar! 😉", "erro");
+    if (!LIVRO_MANUAL) return mostrarToast("Não há um livro definido para resenhar no momento!", "erro");
+    if (!texto.trim()) return mostrarToast("Escreva sua resenha antes de publicar! 😉", "erro");
 
     try {
         if (btnPublicar) {
@@ -126,9 +137,10 @@ window.postarResenha = async function() {
         });
         
         textoArea.value = "";
-        alert("Resenha publicada com sucesso! ✨");
+        mostrarToast("Resenha publicada com sucesso! ✨", "sucesso");
     } catch (e) { 
         console.error("Erro ao salvar resenha:", e); 
+        mostrarToast("Erro ao publicar resenha.", "erro");
     } finally {
         if (btnPublicar) {
             btnPublicar.disabled = false;
@@ -138,9 +150,9 @@ window.postarResenha = async function() {
     }
 };
 
-// --- ALTERNAR CURTIDA (LIKE / UNLIKE) ---
+// --- ALTERNAR CURTIDA ---
 window.alternarCurtida = async function(resenhaId, jaCurtiu) {
-    if (!usuarioLogado) return alert("Você precisa estar logada para curtir as resenhas! ❤️");
+    if (!usuarioLogado) return mostrarToast("Você precisa estar logada para curtir as resenhas! ❤️", "erro");
     const resenhaRef = doc(db, "resenhas", resenhaId);
     try {
         if (jaCurtiu) {
@@ -169,7 +181,7 @@ function escutarResenhasDoLivroAtual() {
         orderBy("dataCriacao", "desc")
     );
 
-    desativarEscutaResenhas = onSnapshot(q, async (snapshot) => {
+    desativarEscutaResenhas = onSnapshot(q, (snapshot) => {
         container.innerHTML = "";
         
         if (snapshot.empty) {
@@ -186,22 +198,7 @@ function escutarResenhasDoLivroAtual() {
             const jaCurtiu = usuarioLogado && curtidas.includes(usuarioLogado.uid);
             const podeApagar = usuarioLogado && (usuarioLogado.uid === res.uid || usuarioLogado.uid === ADMIN_UID);
 
-            let nomesQuemCurtiu = [];
-            if (qndeCurtidas > 0) {
-                const promessas = curtidas.map(async (uidDonoDaCurtida) => {
-                    try {
-                        const userDoc = await getDoc(doc(db, "usuarios", uidDonoDaCurtida));
-                        if (userDoc.exists() && userDoc.data().usuario) {
-                            return `@${userDoc.data().usuario}`;
-                        }
-                        return "Membro do Clube";
-                    } catch (e) {
-                        return "Membro do Clube";
-                    }
-                });
-                nomesQuemCurtiu = await Promise.all(promessas);
-            }
-            const textoListaCurtidas = nomesQuemCurtiu.length > 0 ? nomesQuemCurtiu.join(", ") : "Ninguém curtiu ainda";
+            const jsonCurtidas = JSON.stringify(curtidas).replace(/"/g, '&quot;');
 
             const div = document.createElement('div');
             div.classList.add('review-post');
@@ -224,16 +221,17 @@ function escutarResenhasDoLivroAtual() {
                     <p>"${res.texto}"</p>
                     <div style="margin-bottom: 10px;">${"⭐".repeat(res.nota || 5)}</div>
                     
-                    <div style="display: flex; align-items: center; gap: 5px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
                         <button 
                             onclick="alternarCurtida('${id}', ${jaCurtiu})" 
-                            style="background: none; border: none; cursor: pointer; font-size: 1.1rem; padding: 0; color: ${jaCurtiu ? '#ef5f81' : '#666'};"
+                            style="background: none; border: none; cursor: pointer; font-size: 1.2rem; padding: 0; color: ${jaCurtiu ? '#ef5f81' : '#666'};"
                         >
                             ${jaCurtiu ? '❤️' : '🤍'}
                         </button>
+
                         <span 
-                            title="Curtido por: ${textoListaCurtidas}" 
-                            style="font-size: 1.1rem; cursor: help; color: ${jaCurtiu ? '#ef5f81' : '#666'}; font-weight: ${jaCurtiu ? 'bold' : 'normal'}; border-bottom: 1px dashed #ccc;"
+                            onclick="abrirModalCurtidas(${jsonCurtidas})"
+                            style="font-size: 0.95rem; cursor: pointer; color: ${jaCurtiu ? '#ef5f81' : '#666'}; font-weight: ${jaCurtiu ? 'bold' : 'normal'}; text-decoration: underline;"
                         >
                             ${qndeCurtidas} ${qndeCurtidas === 1 ? 'curtida' : 'curtidas'}
                         </span>
@@ -258,7 +256,6 @@ function escutarResenhasDoLivroAtual() {
     });
 }
 
-// --- ESCUTA OS COMENTÁRIOS DE CADA CARD (TEMPO REAL) ---
 function escutarComentariosDaResenha(resenhaId) {
     const listaDiv = document.getElementById(`lista-comentarios-${resenhaId}`);
     if (!listaDiv) return;
@@ -306,21 +303,20 @@ function escutarComentariosDaResenha(resenhaId) {
 window.deletarComentario = async function(resenhaId, comentarioId) {
     if (!confirm("Deseja mesmo apagar este comentário? 🤔")) return;
     try {
-        const { doc, deleteDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
         await deleteDoc(doc(db, "resenhas", resenhaId, "comentarios", comentarioId));
+        mostrarToast("Comentário apagado!", "sucesso");
     } catch (e) {
         console.error("Erro ao deletar comentário:", e);
-        alert("Você não tem permissão para apagar este comentário.");
+        mostrarToast("Você não tem permissão para apagar este comentário.", "erro");
     }
 };
 
-// --- FUNÇÃO ADICIONAR COMENTÁRIO ---
 window.postarComentario = async function(resenhaId) {
     const input = document.getElementById(`input-comentario-${resenhaId}`);
     const texto = input ? input.value : "";
 
-    if (!usuarioLogado) return alert("Precisa de fazer login para comentar! 🌸");
-    if (!texto.trim()) return alert("Digite alguma resposta antes de enviar! ✍️");
+    if (!usuarioLogado) return mostrarToast("Precisa de fazer login para comentar! 🌸", "erro");
+    if (!texto.trim()) return mostrarToast("Digite alguma resposta antes de enviar! ✍️", "erro");
 
     try {
         await addDoc(collection(db, "resenhas", resenhaId, "comentarios"), {
@@ -329,22 +325,29 @@ window.postarComentario = async function(resenhaId) {
             texto: texto.trim(),
             dataCriacao: serverTimestamp()
         });
+        
         input.value = ""; 
+
+        // 📜 SCROLL SUAVE ATÉ OS COMENTÁRIOS DA RESENHA
+        const listaDiv = document.getElementById(`lista-comentarios-${resenhaId}`);
+        if (listaDiv) {
+            listaDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
     } catch (e) {
         console.error("Erro ao comentar:", e);
-        alert("Erro ao enviar comentário.");
+        mostrarToast("Erro ao enviar comentário.", "erro");
     }
 };
-
 // --- FUNÇÃO PARA DELETAR RESENHA ---
 window.deletarResenha = async function(id) {
     if (!confirm("Tem certeza que deseja apagar essa resenha? 🤔")) return;
     try {
         await deleteDoc(doc(db, "resenhas", id));
-        alert("Resenha removida! ✨");
+        mostrarToast("Resenha removida! ✨", "sucesso");
     } catch (e) {
         console.error("Erro ao deletar:", e);
-        alert("Você não tem permissão para apagar essa resenha.");
+        mostrarToast("Você não tem permissão para apagar essa resenha.", "erro");
     }
 };        
 
@@ -364,8 +367,10 @@ function atualizarLivroDoMes() {
             : '';
 
         const botaoDownloadPdf = LIVRO_MANUAL.linkPDF 
-            ? `<a href="${LIVRO_MANUAL.linkPDF}" target="_blank" download="${LIVRO_MANUAL.titulo.replace(/\s+/g, '_')}.pdf" style="display:inline-block; margin-top:15px; padding:8px 16px; background-color:#a91739; color:white; text-decoration:none; border-radius:20px; font-weight:bold; font-size:0.9rem;">📄 Baixar PDF</a>`
+            ? `<a href="${LIVRO_MANUAL.linkPDF}" target="_blank" download="${LIVRO_MANUAL.titulo.replace(/\s+/g, '_')}.pdf" style="display:inline-block; margin-top:15px; margin-right:10px; padding:8px 16px; background-color:#a91739; color:white; text-decoration:none; border-radius:20px; font-weight:bold; font-size:0.9rem;">📄 Baixar PDF</a>`
             : '';
+
+        const botaoMarcarLido = `<button id="btn-marcar-lido" onclick="alternarLivroLido()" style="display:inline-block; margin-top:15px; padding:8px 16px; background-color:#EE3A8C; color:white; border:none; border-radius:20px; font-weight:bold; font-size:0.9rem; cursor:pointer;">✔️ Marcar como Lido</button>`;
 
         display.innerHTML = `
             <div style="display:flex; gap:20px; align-items:center; background:white; padding:20px; border-radius:15px; box-shadow:0 4px 15px rgba(0,0,0,0.05);">
@@ -377,14 +382,17 @@ function atualizarLivroDoMes() {
                     <h4 style="margin:0; color:#ef5f81; font-size:1.5rem; text-transform: capitalize;">${LIVRO_MANUAL.titulo || 'Sem título'}</h4>
                     <p style="margin:5px 0;"><strong>Autor:</strong> ${LIVRO_MANUAL.autor || 'Desconhecido'}</p>
                     <p style="font-size:0.9rem; color:#555; margin:0; line-height: 1.4;">${LIVRO_MANUAL.descricao || 'Sem descrição cadastrada.'}</p>
-                    <div style="display:flex; flex-wrap:wrap;">
+                    <div style="display:flex; flex-wrap:wrap; align-items:center;">
                         ${botaoDownloadEpub}
                         ${botaoDownloadPdf}
+                        ${botaoMarcarLido}
                     </div>
                 </div>
             </div>
         `;
         if (labelResenha) labelResenha.innerText = `Lendo: ${LIVRO_MANUAL.titulo}`;
+
+        verificarSeLivroFoiLido();
     }
 }
 window.atualizarLivroDoMes = atualizarLivroDoMes;
@@ -394,3 +402,134 @@ window.addEventListener('DOMContentLoaded', () => {
         exibirResenhas(); 
     }
 });
+
+// --- FUNÇÕES DO MODAL DE CURTIDAS ---
+window.abrirModalCurtidas = async function(curtidasUids) {
+    const modal = document.getElementById('modal-curtidas');
+    const containerLista = document.getElementById('lista-usuarios-curtidas');
+    
+    if (!modal || !containerLista) return;
+
+    containerLista.innerHTML = `<p style="text-align:center; color:#888; font-size:0.9rem;">Carregando membros... ☕</p>`;
+    modal.style.display = 'flex';
+
+    if (!curtidasUids || curtidasUids.length === 0) {
+        containerLista.innerHTML = `<p style="text-align:center; color:#888; font-size:0.9rem;">Ninguém curtiu ainda.</p>`;
+        return;
+    }
+
+    try {
+        const promessas = curtidasUids.map(async (uid) => {
+            const userDoc = await getDoc(doc(db, "usuarios", uid));
+            if (userDoc.exists()) {
+                const dados = userDoc.data();
+                return {
+                    nome: dados.usuario ? `@${dados.usuario}` : "Membro do Clube",
+                    foto: dados.foto || ""
+                };
+            }
+            return { nome: "Membro do Clube", foto: "" };
+        });
+
+        const usuarios = await Promise.all(promessas);
+        containerLista.innerHTML = "";
+
+        usuarios.forEach(user => {
+            const item = document.createElement('div');
+            item.style.display = 'flex';
+            item.style.alignItems = 'center';
+            item.style.gap = '10px';
+            item.style.padding = '8px';
+            item.style.borderRadius = '8px';
+            item.style.background = '#f9f9f9';
+
+            const avatarHTML = user.foto 
+                ? `<img src="${user.foto}" style="width:35px; height:35px; border-radius:50%; object-fit:cover;">`
+                : `<div style="width:35px; height:35px; border-radius:50%; background:#ef5f81; color:white; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:0.8rem;">${user.nome.replace('@','').charAt(0).toUpperCase()}</div>`;
+
+            item.innerHTML = `
+                ${avatarHTML}
+                <span style="font-weight: 500; color: #333; font-size: 0.95rem;">${user.nome}</span>
+            `;
+            containerLista.appendChild(item);
+        });
+
+    } catch (e) {
+        console.error("Erro ao carregar lista de curtidas:", e);
+        containerLista.innerHTML = `<p style="text-align:center; color:red; font-size:0.9rem;">Erro ao carregar lista.</p>`;
+    }
+};
+
+window.fecharModalCurtidas = function() {
+    const modal = document.getElementById('modal-curtidas');
+    if (modal) modal.style.display = 'none';
+};
+
+window.addEventListener('click', (e) => {
+    const modal = document.getElementById('modal-curtidas');
+    if (e.target === modal) {
+        fecharModalCurtidas();
+    }
+});
+
+// --- MARCAR LIVRO COMO LIDO ---
+window.alternarLivroLido = async function() {
+    if (!usuarioLogado) {
+        mostrarToast("Você precisa estar logada para marcar como lido!", "erro");
+        return;
+    }
+
+    if (!LIVRO_MANUAL) return;
+
+    const userRef = doc(db, "usuarios", usuarioLogado.uid);
+
+    try {
+        const userSnap = await getDoc(userRef);
+        const dados = userSnap.exists() ? userSnap.data() : {};
+        const livrosLidos = dados.livrosLidos || [];
+        const jaLido = livrosLidos.includes(LIVRO_MANUAL.id);
+
+        if (jaLido) {
+            await updateDoc(userRef, {
+                livrosLidos: arrayRemove(LIVRO_MANUAL.id)
+            });
+            mostrarToast("Livro desmarcado das suas leituras! 📖", "sucesso");
+        } else {
+            await setDoc(userRef, {
+                livrosLidos: arrayUnion(LIVRO_MANUAL.id)
+            }, { merge: true });
+            mostrarToast("Livro marcado como lido! 🎉📚", "sucesso");
+        }
+
+        verificarSeLivroFoiLido();
+
+    } catch (e) {
+        console.error("Erro ao atualizar leitura:", e);
+        mostrarToast("Erro ao salvar status de leitura.", "erro");
+    }
+};
+
+async function verificarSeLivroFoiLido() {
+    const btn = document.getElementById('btn-marcar-lido');
+    if (!btn || !usuarioLogado || !LIVRO_MANUAL) return;
+
+    btn.style.cursor = "pointer";
+
+    try {
+        const userSnap = await getDoc(doc(db, "usuarios", usuarioLogado.uid));
+        const livrosLidos = (userSnap.exists() && userSnap.data().livrosLidos) ? userSnap.data().livrosLidos : [];
+        const jaLido = livrosLidos.includes(LIVRO_MANUAL.id);
+
+        if (jaLido) {
+            btn.innerHTML = "✅ Lido!";
+            btn.style.background = "#77e7af";
+            btn.style.color = "black";
+        } else {
+            btn.innerHTML = "✔️ Marcar como Lido";
+            btn.style.background = "#EE3A8C";
+            btn.style.color = "white";
+        }
+    } catch (e) {
+        console.error("Erro ao verificar leitura:", e);
+    }
+}
