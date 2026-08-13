@@ -27,15 +27,15 @@ window.mostrarToast = function(mensagem, tipo = 'padrao') {
 // =========================================================================
 // 📚 CONFIGURAÇÃO MANUAL DO LIVRO DO MÊS
 
-const LIVRO_MANUAL = null/*{
-    id: "Vidas_secas26", 
-    titulo: "Vidas Secas",
-    autor: "Graciliano Ramos",
-    capa: "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSkr3v4DGqY3u0EXq_Wehl9uKdTVjMfioLzzDNbsHfph3vWGRQibFRDC9tBu3to-9VpIFRUPAvoQmAgEeGshwHZCB3ExZ8nPFWABiQs3G4&usqp=CAc", 
-    descricao: "Vidas Secas, obra de Graciliano Ramos publicada em 1938, narra a saga de uma família de retirantes nordestinos no sertão. Fugindo da seca e da miséria, a história aborda a desumanização, a pobreza extrema e a exploração social",
-    link: "https://drive.google.com/file/d/1OoCCArYi0_qrGLnDR2QLApLht4zLmlyP/view?usp=sharing", 
-    linkPDF: "https://drive.google.com/file/d/1kGpGR59xundPef1ao8kgWTLArtQ020XH/view?usp=sharing" 
-};*/
+const LIVRO_MANUAL = {
+    id: "Coração_Selvagem_2026", 
+    titulo: "Coração Selvagem",
+    autor: "Maggie Gates",
+    capa: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvgfmbawFKXyJ0OSSVD_9qX2qWFInKkW_9TBeFbwBpYQ&s=10", 
+    descricao: "Morar com um pai solteiro e suas filhas foi um rebaixamento do seu estilo de vida confortável na cidade, que ela só aceitou por um motivo: o desespero para salvar o emprego e o que restou da sua carreira. E não vai ser um cowboy gostoso que vai conseguir laçá-la para que fique um segundo a mais do que o necessário.",
+    link: "https://drive.google.com/file/d/19LTAmquexhoG9TrBNJneBIQwPP6hbcQ1/view?usp=drivesdk", 
+    linkPDF: "https://drive.google.com/file/d/1xM3iMjBmxqrVVG0fuPj6TdRtVTX1Vxpr/view?usp=drivesdk" 
+};
 // =========================================================================
 
 const firebaseConfig = {
