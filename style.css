@@ -346,6 +346,9 @@ section {
 /* =========================================================================
    📱 MEDIA QUERIES - REGRAS ADAPTÁVEIS PARA TELEMÓVEL / CELULAR
    ========================================================================= */
+/* =========================================================================
+   📱 MEDIA QUERIES - REGRAS ADAPTÁVEIS PARA TELEMÓVEL / CELULAR
+   ========================================================================= */
 @media (max-width: 768px) {
     /* Ajustes do Menu do Topo */
     header {
@@ -367,16 +370,34 @@ section {
         padding: 1rem 4%; /* Margens menores nas laterais do ecrã */
     }
 
-    /* 🔑 Correção Dinâmica para a Exibição do Livro do Mês (Destaque principal) */
+    /* 🔑 Ajuste para o Card de Perfil caber confortavelmente em telas pequenas */
+    .perfil-container {
+        padding: 20px 10px;
+    }
+
+    .perfil-card {
+        padding: 20px 15px; /* Reduz ligeiramente o espaçamento interno no mobile */
+    }
+
+    /* 🔑 Ajuste do Aviso Flutuante (Toast) para não ultrapassar a largura do celular */
+    .toast {
+        right: 5%;
+        left: 5%;
+        min-width: unset;
+        width: 90%;
+        box-sizing: border-box;
+    }
+
+    /* Correção Dinâmica para a Exibição do Livro do Mês */
     #book-display > div {
-        flex-direction: column !important; /* Transforma linha em coluna no mobile */
+        flex-direction: column !important;
         text-align: center;
         padding: 15px !important;
         gap: 15px !important;
     }
 
     #book-display img {
-        width: 180px !important; /* Tamanho controlado para não estourar a tela */
+        width: 180px !important;
         height: 260px !important;
         margin: 0 auto;
     }
