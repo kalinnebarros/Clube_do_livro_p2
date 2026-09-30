@@ -405,6 +405,30 @@ section {
     .review-form button {
         width: 100%;
     }
+        .login-container {
+        width: 94%;
+        max-width: none;
+        margin: 40px auto 0 auto;
+    }
+
+    .auth-box {
+        padding: 35px 25px;
+        border-radius: 18px;
+    }
+
+    .auth-box h2 {
+        font-size: 1.5rem;
+    }
+
+    .auth-box input {
+        padding: 14px 16px;
+        font-size: 1rem;
+    }
+
+    .auth-box button {
+        padding: 15px;
+        font-size: 1rem;
+    }
 }
 
 button, #btn-marcar-lido {
