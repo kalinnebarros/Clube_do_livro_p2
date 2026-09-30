@@ -1,4 +1,6 @@
-/* --- CONFIGURAÇÕES GERAIS --- */
+/* =========================================================
+   CONFIGURAÇÕES GERAIS
+   ========================================================= */
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -12,7 +14,9 @@ body {
 }
 
 
-/* --- CABEÇALHO --- */
+/* =========================================================
+   CABEÇALHO
+   ========================================================= */
 
 header {
     background: #ef5f81;
@@ -53,7 +57,9 @@ header a:hover {
 }
 
 
-/* --- SEÇÕES --- */
+/* =========================================================
+   SEÇÕES
+   ========================================================= */
 
 section {
     padding: 2rem 5%;
@@ -84,7 +90,9 @@ section {
 }
 
 
-/* --- FORMULÁRIO DE RESENHAS --- */
+/* =========================================================
+   FORMULÁRIO DE RESENHAS
+   ========================================================= */
 
 .review-form {
     background: white;
@@ -120,7 +128,9 @@ section {
 }
 
 
-/* --- FEED DE RESENHAS --- */
+/* =========================================================
+   FEED DE RESENHAS
+   ========================================================= */
 
 #reviews-container {
     display: grid;
@@ -162,9 +172,9 @@ section {
 }
 
 
-/* =========================================================================
-   👤 ESTILOS DA TELA DE PERFIL
-   ========================================================================= */
+/* =========================================================
+   👤 TELA DE PERFIL
+   ========================================================= */
 
 .perfil-container {
     display: flex;
@@ -271,9 +281,9 @@ section {
 }
 
 
-/* =========================================================================
+/* =========================================================
    🔐 TELA DE LOGIN
-   ========================================================================= */
+   ========================================================= */
 
 .body-login {
     display: flex !important;
@@ -286,9 +296,6 @@ section {
     box-sizing: border-box !important;
 }
 
-
-/* Cabeçalho específico do login */
-
 .header-login {
     position: absolute !important;
     top: 0;
@@ -299,9 +306,6 @@ section {
     padding: 15px 0;
 }
 
-
-/* Container do login */
-
 .login-container {
     width: 100%;
     max-width: 400px;
@@ -309,9 +313,6 @@ section {
     box-sizing: border-box;
     margin: 80px auto 0 auto;
 }
-
-
-/* Caixa de login */
 
 .auth-box {
     background: white;
@@ -377,251 +378,103 @@ section {
 }
 
 
-/* =========================================================================
-   📱 RESPONSIVIDADE
-   ========================================================================= */
-
 /* =========================================================
-   LOGIN MOBILE - VERSÃO FINAL
+   📱 RESPONSIVIDADE DA PÁGINA PRINCIPAL
    ========================================================= */
 
 @media (max-width: 768px) {
 
-    /* O login ocupa a tela inteira */
-    .login-container {
-        position: fixed !important;
+    /* Cabeçalho das páginas normais */
 
-        top: 50% !important;
-        left: 50% !important;
-
-        transform: translate(-50%, -50%) !important;
-
-        width: calc(100vw - 24px) !important;
-        max-width: 500px !important;
-
-        margin: 0 !important;
-        padding: 0 !important;
-
-        min-height: auto !important;
-
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: stretch !important;
-        justify-content: center !important;
-
-        box-sizing: border-box !important;
-    }
-
-
-    /* TÍTULO ROSA */
-    .login-container > header {
-        position: static !important;
-
-        width: 100% !important;
-        max-width: none !important;
-
-        margin: 0 !important;
-        padding: 25px 20px !important;
-
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-
-        box-sizing: border-box !important;
-
-        border-radius: 0 !important;
-    }
-
-
-    .login-container > header h1 {
-        margin: 0 !important;
-
-        font-size: 1.65rem !important;
-
-        white-space: normal !important;
-
-        text-align: center !important;
-    }
-
-
-    /* CAIXA BRANCA GRANDE */
-    .auth-box {
-        width: 100% !important;
-        max-width: none !important;
-
-        margin: 0 !important;
-
-        padding: 55px 35px !important;
-
-        box-sizing: border-box !important;
-
-        border-radius: 0 0 24px 24px !important;
-
-        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12) !important;
-
-        text-align: center !important;
-    }
-
-
-    /* TÍTULO */
-    .auth-box h2 {
-        margin: 0 0 35px 0 !important;
-
-        font-size: 1.9rem !important;
-    }
-
-
-    /* CAMPOS */
-    .auth-box input {
-        width: 100% !important;
-
-        height: 60px !important;
-
-        padding: 0 18px !important;
-
-        margin: 0 0 18px 0 !important;
-
-        box-sizing: border-box !important;
-
-        font-size: 1.05rem !important;
-
-        border-radius: 10px !important;
-    }
-
-
-    /* BOTÃO */
-    .auth-box button {
-        width: 100% !important;
-
-        height: 60px !important;
-
-        padding: 0 !important;
-
-        margin: 8px 0 22px 0 !important;
-
-        box-sizing: border-box !important;
-
-        font-size: 1.05rem !important;
-
-        border-radius: 10px !important;
-    }
-
-
-    /* TEXTOS */
-    .auth-box p {
-        margin: 12px 0 !important;
-
-        font-size: 1rem !important;
-    }
-}/* =========================================================
-   AJUSTES PARA CELULAR
-   ========================================================= */
-
-@media (max-width: 768px) {
-
-    /* =====================================================
-       PÁGINA PRINCIPAL
-       ===================================================== */
-
-    body {
-        overflow-x: hidden;
-    }
-
-    /* Cabeçalho */
-    body:not(.body-login) header {
-        width: 100%;
-        padding: 15px 12px;
-        box-sizing: border-box;
-
-        display: flex;
+    header {
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
         gap: 12px;
-    }
-
-    body:not(.body-login) header h1 {
-        font-size: 1.25rem;
-        white-space: normal;
+        padding: 12px;
         text-align: center;
-        margin: 0;
     }
 
-    body:not(.body-login) header ul {
-        width: 100%;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
+    header ul {
+        gap: 15px;
         flex-wrap: wrap;
-        gap: 12px;
-
-        margin: 0;
-        padding: 0;
+        justify-content: center;
     }
 
-    body:not(.body-login) header a {
-        font-size: 0.9rem;
+    header h1 {
+        font-size: 1.3rem;
+        white-space: normal;
     }
 
 
-    /* Conteúdo principal */
+    /* Seções */
 
     section {
-        width: 100%;
-        padding: 20px 16px;
+        padding: 1rem 4%;
+    }
+
+
+    /* Perfil */
+
+    .perfil-container {
+        padding: 20px 10px;
+    }
+
+    .perfil-card {
+        padding: 20px 15px;
+    }
+
+
+    /* Toast */
+
+    .toast {
+        right: 5%;
+        left: 5%;
+        min-width: unset;
+        width: 90%;
         box-sizing: border-box;
-    }
-
-    #hero {
-        width: 100%;
-        margin: 15px auto;
-        padding: 35px 20px;
-        box-sizing: border-box;
-    }
-
-    #hero h2 {
-        font-size: 1.8rem;
-        line-height: 1.3;
-    }
-
-    #hero p {
-        font-size: 1rem;
     }
 
 
     /* Livro do mês */
 
-    #book-display {
-        width: 100%;
-        box-sizing: border-box;
+    #book-display > div {
+        flex-direction: column !important;
+        text-align: center;
+        padding: 15px !important;
+        gap: 15px !important;
+    }
+
+    #book-display img {
+        width: 180px !important;
+        height: 260px !important;
+        margin: 0 auto;
     }
 
 
-    /* Resenhas */
+    /* Formulário */
+
+    .review-form button {
+        width: 100%;
+    }
+
+
+    /* Feed */
 
     #reviews-container {
-        width: 100%;
         grid-template-columns: 1fr;
     }
+}
 
-    .review-post {
+
+/* =========================================================
+   🔐 LOGIN — CELULAR
+   BLOCO SEPARADO PARA NÃO AFETAR A PÁGINA PRINCIPAL
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    body.body-login {
         width: 100%;
-    }
-
-    .review-form {
-        width: 100%;
-    }
-
-
-    /* =====================================================
-       LOGIN
-       ===================================================== */
-
-    .body-login {
-        min-height: 100vh !important;
+        min-height: 100vh;
 
         margin: 0 !important;
         padding: 15px !important;
@@ -635,14 +488,17 @@ section {
         overflow-x: hidden;
     }
 
-    .login-container {
-        position: static !important;
 
+    /* Container do login */
+
+    body.body-login .login-container {
         width: 100% !important;
         max-width: 500px !important;
 
         margin: 0 auto !important;
         padding: 0 !important;
+
+        box-sizing: border-box !important;
 
         display: flex !important;
         flex-direction: column !important;
@@ -654,81 +510,168 @@ section {
 
     /* Cabeçalho do login */
 
-    .login-container > .header-login {
+    body.body-login .login-container .header-login {
         position: static !important;
 
         width: 100% !important;
 
         margin: 0 !important;
-        padding: 20px 15px !important;
+        padding: 24px 18px !important;
 
         box-sizing: border-box !important;
 
         display: flex !important;
-        justify-content: center !important;
         align-items: center !important;
+        justify-content: center !important;
 
-        border-radius: 18px 18px 0 0;
-    }
-
-    .login-container > .header-login h1 {
-        font-size: 1.5rem !important;
-        white-space: normal !important;
         text-align: center !important;
-        line-height: 1.3;
+
+        border-radius: 20px 20px 0 0 !important;
+    }
+
+    body.body-login .login-container .header-login h1 {
+        margin: 0 !important;
+
+        font-size: 1.55rem !important;
+
+        line-height: 1.3 !important;
+
+        white-space: normal !important;
+
+        text-align: center !important;
     }
 
 
-    /* Caixa do login */
+    /* Caixa branca */
 
-    .auth-box {
+    body.body-login .auth-box {
         width: 100% !important;
 
         margin: 0 !important;
 
-        padding: 45px 28px !important;
+        padding: 50px 28px !important;
 
         box-sizing: border-box !important;
 
         border-radius: 0 0 22px 22px !important;
 
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.10) !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12) !important;
+
+        text-align: center !important;
     }
 
-    .auth-box h2 {
-        font-size: 1.7rem !important;
 
-        margin: 0 0 30px 0 !important;
+    /* Título */
+
+    body.body-login .auth-box h2 {
+        margin: 0 0 32px 0 !important;
+
+        font-size: 1.75rem !important;
+
+        color: #444 !important;
     }
 
-    .auth-box input {
+
+    /* Campos */
+
+    body.body-login .auth-box input {
         width: 100% !important;
 
-        height: 55px !important;
+        height: 58px !important;
 
-        padding: 0 16px !important;
+        margin: 0 0 17px 0 !important;
 
-        margin-bottom: 16px !important;
+        padding: 0 17px !important;
 
         box-sizing: border-box !important;
 
         font-size: 1rem !important;
+
+        border-radius: 10px !important;
     }
 
-    .auth-box button {
+
+    /* Botão */
+
+    body.body-login .auth-box button {
         width: 100% !important;
 
-        height: 55px !important;
+        height: 58px !important;
+
+        margin: 8px 0 22px 0 !important;
 
         padding: 0 !important;
 
-        margin: 8px 0 20px 0 !important;
+        box-sizing: border-box !important;
 
         font-size: 1rem !important;
+
+        border-radius: 10px !important;
     }
 
-    .auth-box p {
+
+    /* Textos */
+
+    body.body-login .auth-box p {
+        margin: 12px 0 !important;
+
         font-size: 0.95rem !important;
-        margin: 10px 0 !important;
     }
+}
+
+
+/* =========================================================
+   BOTÕES
+   ========================================================= */
+
+button,
+#btn-marcar-lido {
+    cursor: pointer !important;
+}
+
+
+/* =========================================================
+   🔔 AVISO FLUTUANTE
+   ========================================================= */
+
+.toast {
+    visibility: hidden;
+    min-width: 250px;
+    background-color: #ef5f81;
+    color: #fff;
+    text-align: center;
+    border-radius: 12px;
+    padding: 14px 20px;
+    position: fixed;
+    z-index: 1000;
+    right: 20px;
+    top: 20px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    transition: opacity 0.3s ease, top 0.3s ease, visibility 0.3s;
+}
+
+.toast.show {
+    visibility: visible;
+    opacity: 1;
+    top: 30px;
+}
+
+.toast.sucesso {
+    background-color: #428fa9fd;
+}
+
+.toast.erro {
+    background-color: #d32f2f;
+}
+
+
+/* =========================================================
+   ROLAGEM SUAVE
+   ========================================================= */
+
+html {
+    scroll-behavior: smooth;
 }
