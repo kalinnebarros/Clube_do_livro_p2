@@ -405,29 +405,38 @@ section {
     .review-form button {
         width: 100%;
     }
-        .login-container {
-        width: 94%;
-        max-width: none;
-        margin: 40px auto 0 auto;
+
+    .login-container {
+    width: 92%;
+    max-width: 380px;
+    margin: 20px auto 0 auto;
     }
 
     .auth-box {
-        padding: 35px 25px;
-        border-radius: 18px;
+    padding: 22px 18px;
+    border-radius: 16px;
     }
 
     .auth-box h2 {
-        font-size: 1.5rem;
+    font-size: 1.3rem;
+    margin-bottom: 18px;
     }
 
     .auth-box input {
-        padding: 14px 16px;
-        font-size: 1rem;
+    padding: 11px 13px;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
     }
 
     .auth-box button {
-        padding: 15px;
-        font-size: 1rem;
+    padding: 12px;
+    font-size: 0.95rem;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    }
+
+    .auth-box p {
+    font-size: 0.85rem;
     }
 }
 
