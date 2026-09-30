@@ -76,7 +76,9 @@ section {
     padding: 25px 20px;
     box-shadow: 0 4px 15px rgba(107, 44, 145, 0.12);
     box-sizing: border-box;
+    font-size: 1.1rem;
 }
+
 
 #admin-panel {
     background: #fff;
