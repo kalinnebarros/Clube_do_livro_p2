@@ -381,236 +381,136 @@ section {
    📱 RESPONSIVIDADE
    ========================================================================= */
 
+/* =========================================================
+   LOGIN MOBILE - VERSÃO FINAL
+   ========================================================= */
+
 @media (max-width: 768px) {
 
-    /* Menu das outras páginas */
-
-    header {
-        flex-direction: column;
-        gap: 12px;
-        padding: 12px;
-        text-align: center;
-    }
-
-    header ul {
-        gap: 15px;
-    }
-
-    header h1 {
-        font-size: 1.3rem;
-    }
-
-    section {
-        padding: 1rem 4%;
-    }
-
-
-    /* Perfil */
-
-    .perfil-container {
-        padding: 20px 10px;
-    }
-
-    .perfil-card {
-        padding: 20px 15px;
-    }
-
-
-    /* Toast */
-
-    .toast {
-        right: 5%;
-        left: 5%;
-        min-width: unset;
-        width: 90%;
-        box-sizing: border-box;
-    }
-
-
-    /* Livro do mês */
-
-    #book-display > div {
-        flex-direction: column !important;
-        text-align: center;
-        padding: 15px !important;
-        gap: 15px !important;
-    }
-
-    #book-display img {
-        width: 180px !important;
-        height: 260px !important;
-        margin: 0 auto;
-    }
-
-
-    /* Formulário */
-
-    .review-form button {
-        width: 100%;
-    }
-
-
-    /* =========================================================
-       🔐 LOGIN NO CELULAR
-       ========================================================= */
-
+    /* O login ocupa a tela inteira */
     .login-container {
-        width: 100%;
-        max-width: none;
+        position: fixed !important;
 
-        min-height: 100vh;
+        top: 50% !important;
+        left: 50% !important;
 
-        margin: 0;
-        padding: 20px;
+        transform: translate(-50%, -50%) !important;
 
-        box-sizing: border-box;
+        width: calc(100vw - 24px) !important;
+        max-width: 500px !important;
 
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        margin: 0 !important;
+        padding: 0 !important;
 
-        transform: translateY(30px);
+        min-height: auto !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        justify-content: center !important;
+
+        box-sizing: border-box !important;
     }
 
 
-    /* Cabeçalho do login */
-
+    /* TÍTULO ROSA */
     .login-container > header {
-        width: 100%;
-        max-width: 500px;
+        position: static !important;
 
-        margin: 0;
-        padding: 22px 20px;
+        width: 100% !important;
+        max-width: none !important;
 
-        box-sizing: border-box;
+        margin: 0 !important;
+        padding: 25px 20px !important;
 
-        justify-content: center;
-        text-align: center;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+
+        box-sizing: border-box !important;
+
+        border-radius: 0 !important;
     }
+
 
     .login-container > header h1 {
-        margin: 0;
-        font-size: 1.7rem;
+        margin: 0 !important;
+
+        font-size: 1.65rem !important;
+
+        white-space: normal !important;
+
+        text-align: center !important;
     }
 
 
-    /* Caixa grande */
-
+    /* CAIXA BRANCA GRANDE */
     .auth-box {
-        width: 100%;
-        max-width: 500px;
+        width: 100% !important;
+        max-width: none !important;
 
-        margin: 0;
+        margin: 0 !important;
 
-        padding: 55px 40px;
+        padding: 55px 35px !important;
 
-        box-sizing: border-box;
+        box-sizing: border-box !important;
 
-        border-radius: 24px;
+        border-radius: 0 0 24px 24px !important;
 
-        text-align: center;
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12) !important;
+
+        text-align: center !important;
     }
 
 
-    /* Título da caixa */
-
+    /* TÍTULO */
     .auth-box h2 {
-        margin: 0 0 35px 0;
-        font-size: 1.8rem;
+        margin: 0 0 35px 0 !important;
+
+        font-size: 1.9rem !important;
     }
 
 
-    /* Campos */
-
+    /* CAMPOS */
     .auth-box input {
-        width: 100%;
+        width: 100% !important;
 
-        height: 60px;
+        height: 60px !important;
 
-        margin-bottom: 18px;
+        padding: 0 18px !important;
 
-        padding: 0 18px;
+        margin: 0 0 18px 0 !important;
 
-        box-sizing: border-box;
+        box-sizing: border-box !important;
 
-        font-size: 1.05rem;
+        font-size: 1.05rem !important;
+
+        border-radius: 10px !important;
     }
 
 
-    /* Botão */
-
+    /* BOTÃO */
     .auth-box button {
-        width: 100%;
+        width: 100% !important;
 
-        height: 60px;
+        height: 60px !important;
 
-        margin-top: 8px;
-        margin-bottom: 22px;
+        padding: 0 !important;
 
-        padding: 0;
+        margin: 8px 0 22px 0 !important;
 
-        font-size: 1.05rem;
+        box-sizing: border-box !important;
+
+        font-size: 1.05rem !important;
+
+        border-radius: 10px !important;
     }
 
 
-    /* Textos */
-
+    /* TEXTOS */
     .auth-box p {
-        margin: 12px 0;
-        font-size: 1rem;
+        margin: 12px 0 !important;
+
+        font-size: 1rem !important;
     }
-}
-
-
-/* --- BOTÕES --- */
-
-button,
-#btn-marcar-lido {
-    cursor: pointer !important;
-}
-
-
-/* =========================================================================
-   🔔 AVISO FLUTUANTE (TOAST)
-   ========================================================================= */
-
-.toast {
-    visibility: hidden;
-    min-width: 250px;
-    background-color: #ef5f81;
-    color: #fff;
-    text-align: center;
-    border-radius: 12px;
-    padding: 14px 20px;
-    position: fixed;
-    z-index: 1000;
-    right: 20px;
-    top: 20px;
-    font-size: 0.95rem;
-    font-weight: bold;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    opacity: 0;
-    transition: opacity 0.3s ease, top 0.3s ease, visibility 0.3s;
-}
-
-.toast.show {
-    visibility: visible;
-    opacity: 1;
-    top: 30px;
-}
-
-.toast.sucesso {
-    background-color: #428fa9fd;
-}
-
-.toast.erro {
-    background-color: #d32f2f;
-}
-
-
-/* --- ROLAGEM SUAVE --- */
-
-html {
-    scroll-behavior: smooth;
 }
