@@ -53,15 +53,15 @@ let temporizadorInatividade;
 // 📚 CONFIGURAÇÃO MANUAL DO LIVRO DO MÊS
 // =========================================================================
 
-const LIVRO_MANUAL = null /*{
-    id: "Coração_Selvagem_2026",
-    titulo: "Coração Selvagem",
-    autor: "Maggie Gates",
-    capa: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvgfmbawFKXyJ0OSSVD_9qX2qWFInKkW_9TBeFbwBpYQ&s=10",
-    descricao: "Morar com um pai solteiro e suas filhas foi um rebaixamento do seu estilo de vida confortável na cidade, que ela só aceitou por um motivo: o desespero para salvar o emprego e o que restou da sua carreira. E não vai ser um cowboy gostoso que vai conseguir laçá-la para que fique um segundo a mais do que o necessário.",
+const LIVRO_MANUAL = {
+    id: "uma-mulher-no-escuro-2026",
+    titulo: "Uma Mulher no Escuro",
+    autor: "Raphael Montes",
+    capa: "https://m.media-amazon.com/images/I/91OyxWEVdDL._AC_UF1000,1000_QL80_.jpg",
+    descricao: "Victoria Bravo, uma jovem solitária e traumatizada que vive em um apartamento na Lapa, no Rio de Janeiro. Quando ela tinha apenas quatro anos de idade, sua família foi brutalmente assassinada a facadas por um invasor que pichou os rostos das vítimas com tinta preta. Victoria foi a única sobrevivente da tragédia.",
     link: "https://drive.google.com/file/d/19LTAmquexhoG9TrBNJneBIQwPP6hbcQ1/view?usp=drivesdk",
-    linkPDF: "https://drive.google.com/file/d/1xM3iMjBmxqrVVG0fuPj6TdRtVTX1Vxpr/view?usp=drivesdk"
-};*/
+    linkPDF: "https://drive.google.com/file/d/1PLj9b6In7HkBO2BTTb04pURGN5EKqtat/view?usp=drivesdk"
+};
 
 
 // =========================================================================
