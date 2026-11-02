@@ -59,7 +59,7 @@ const LIVRO_MANUAL = {
     autor: "Laurie Gilmore",
     capa: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5D8oRYPNOTBpoIOcXbwiSoCyZrbLDRbgHuQtcQ9JyzQ&s=10",
     descricao: "Quando Kira e Ben se esbarram, as personalidades opostas colidem — ela é reservada, teimosa e com um toque de Grinch, enquanto ele tem o ímpeto natural de ajudar a todos. Mesmo sem intenção inicial de se envolver, Ben acaba ajudando a restaurar a propriedade, fazendo com que ambos se aproximem em meio ao frio do inverno, ao clima natalino e a um romance leve e aconchegante.",
-    link: "https://drive.google.com/file/d/1kZHEtj4EahDiADNFGxYzL3KV5gYiaIeI/view?usp=sharing",
+    link: "https://drive.google.com/file/d/1ti5HBBFFFiU-BYGUWzu_bauy1dvQjjeW/view?usp=sharing",
     linkPDF: "https://drive.google.com/file/d/1f_P0s1VPZTzaEJ7qFv3TL_NYwHbe_VNr/view?usp=sharing"
 }
 
