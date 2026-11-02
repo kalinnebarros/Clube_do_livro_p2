@@ -53,16 +53,15 @@ let temporizadorInatividade;
 // 📚 CONFIGURAÇÃO MANUAL DO LIVRO DO MÊS
 // =========================================================================
 
-const LIVRO_MANUAL =null/* {
+const LIVRO_MANUAL = {
     id: "uma-fazenda-com-a-magia-do-natal",
     titulo: "Uma Fazenda com a Magia do Natal",
     autor: "Laurie Gilmore",
-    capa: "https://m.media-amazon.com/images/I/91OyxWEVdDL._AC_UF1000,1000_QL80_.jpg",
-    descricao: "Victoria Bravo, uma jovem solitária e traumatizada que vive em um apartamento na Lapa, no Rio de Janeiro. Quando ela tinha apenas quatro anos de idade, sua família foi brutalmente assassinada a facadas por um invasor que pichou os rostos das vítimas com tinta preta. Victoria foi a única sobrevivente da tragédia.",
-    link: "https://drive.google.com/file/d/1PLj9b6In7HkBO2BTTb04pURGN5EKqtat/view?usp=drivesdk",
-    linkPDF: "https://drive.google.com/file/d/1R_C_zF4LrQC8lcFuwa2guJM56B6VP4VJ/view?usp=drivesdk"
-}*/;
-
+    capa: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5D8oRYPNOTBpoIOcXbwiSoCyZrbLDRbgHuQtcQ9JyzQ&s=10",
+    descricao: "Quando Kira e Ben se esbarram, as personalidades opostas colidem — ela é reservada, teimosa e com um toque de Grinch, enquanto ele tem o ímpeto natural de ajudar a todos. Mesmo sem intenção inicial de se envolver, Ben acaba ajudando a restaurar a propriedade, fazendo com que ambos se aproximem em meio ao frio do inverno, ao clima natalino e a um romance leve e aconchegante.",
+    link: "https://drive.google.com/file/d/1gClLi3htPnyi-jFvk9wcVpf8sE9xnjSU/view?usp=drive_link",
+    linkPDF: "https://drive.google.com/file/d/1f_P0s1VPZTzaEJ7qFv3TL_NYwHbe_VNr/view?usp=sharing"
+}
 
 // =========================================================================
 // 🔔 TOAST

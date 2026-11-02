@@ -45,7 +45,7 @@ header ul {
 }
 
 header a {
-    color: rgb(255, 255, 255);
+    color: rgb(250, 245, 245);
     text-decoration: none;
     font-weight: bold;
     font-size: 0.95rem;
@@ -77,13 +77,13 @@ section {
     box-shadow: 0 4px 15px rgba(36, 86, 59, 0.12);
     box-sizing: border-box;
     font-size: 1.1rem;
-    color: #ffffff;
+    color: #f0e9e9;
 }
 
 
 #admin-panel {
-    background: #fff;
-    border: 2px dashed #b83b4b;
+    background: #ddcfcf;
+    border: 2px dashed #72222c;
     border-radius: 15px;
     margin: 10px auto;
     max-width: 100%;
@@ -120,8 +120,8 @@ section {
 }
 
 .review-form button {
-    background: #b83b4b;
-    color: white;
+    background: hsl(0, 85%, 28%);
+    color: rgb(240, 227, 227);
     border: none;
     padding: 12px 25px;
     border-radius: 25px;
@@ -629,7 +629,7 @@ section {
 
 header::after {
     content: "🎄";
-    margin-left: 8px;
+    margin-left: 20px;
 }
 
 .header-login h1::before {
